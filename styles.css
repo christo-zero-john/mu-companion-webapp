@@ -1,0 +1,48 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+#alertDiv{
+  display: none;
+  position: fixed;
+  bottom: -20px;
+  z-index: 2;
+  width: 95%;
+  transition: all 1s;
+}
+
+#alertDiv #closeAlert{
+  float: right;
+}
+
+#form {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  
+  display: none;
+  background-color: #f9f9f9e6;
+  padding: 20px;
+}
+
+button
+{
+  margin: 10px 0;
+  display: block;
+}
+
+input {
+  display: inline;
+  max-width: 40%;
+  margin: 5px;
+}
+
+.task-item {
+  background-color: #acff2f72;
+  padding: 10px;
+}
