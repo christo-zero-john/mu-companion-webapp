@@ -9,6 +9,10 @@
   padding-bottom: 1px;
 }
 
+.navbar-brand{
+  color: #a882ee;
+}
+
 .navbar-brand:hover{
   transition: all 2s;
   color: #9a9a9a;
@@ -107,7 +111,6 @@
 .dashboard-button:hover {
   border-bottom: 1px groove #fd9800;
   border-style: groove;
-  scale: 1.02;
-  color: #eaf6a5;
-  background-color: #3b3b3b;
+  color: #c4a5f6;
+  background-color: #313131;
 }
