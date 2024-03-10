@@ -2,6 +2,7 @@
 var condition = false,
   temp,
   formDiv,
+  dataDivContainer,
   dataDiv,
   modalDiv,
   modalTitle,
@@ -490,9 +491,17 @@ var interface = {
   },
   createDataDiv: function () {
     let div = document.createElement("div");
-    div.id = "dataDiv";
+    div.id = "dataDivContainer";
     document.body.appendChild(div);
+    dataDivContainer = document.getElementById("dataDivContainer");
+    dataDivContainer.innerHTML = `
+      <div class="header">
+        <button class="close" onclick="interface.hideDataDivContainer()">Go Back</button>
+      </div>
+      <div class="no-scrollbar" id="dataDiv"></div>
+    `;
     dataDiv = document.getElementById("dataDiv");
+    dataDiv.innerHTML = "This is the dataDiv"
   },
   createFormDiv: function () {
     let div = document.createElement("div");
@@ -561,6 +570,12 @@ var interface = {
       });
     });
     return confirmAction;
+  },
+  showDataDivContainer: function () {
+    dataDivContainer.style.display = "block";
+  },
+  hideDataDivContainer: function () {
+    dataDivContainer.style.display = "none";
   },
   printAlert: async function (message) {
     alertDiv.style.display = "block";
@@ -636,6 +651,7 @@ var interface = {
     });
   },
   printTask: function (task, type) {
+    interface.showDataDivContainer();
     let additionalData = `<div id="additionalData">`;
     userData = localData.getUserData();
     switch (type) {
