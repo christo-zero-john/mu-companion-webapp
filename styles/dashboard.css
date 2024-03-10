@@ -1,0 +1,113 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: oxanium, sans-serif;
+}
+
+.navDiv {
+  padding-bottom: 1px;
+}
+
+.navbar-brand:hover{
+  transition: all 2s;
+  color: #9a9a9a;
+}
+
+.nav-item .nav-link {
+  border-bottom: 1px solid #00ffff53;
+  padding: 8px;
+  color: #fff;
+  font-weight: 200;
+}
+
+.nav-item .nav-link:hover {
+  border-bottom: 2px solid #00ffff;
+  color: #eaf6a5;
+  background-color: #353434;
+  border-radius: 15px 0;
+}
+
+.dashboardTitle {
+  animation: dashboardTitle 1.5s ease forwards;
+}
+
+@keyframes dashboardTitle {
+  0% {
+    width: 1px;
+    overflow: hidden;
+  }
+
+  50% {
+    width: 50px;
+    overflow: hidden;
+  }
+
+  99% {
+    width: 90%;
+    overflow: hidden;
+  }
+
+  100% {
+    width: fit-content;
+    overflow: hidden;
+  }
+}
+
+.dashboard .profilePic {
+  background-color: #4a4a4a7a;
+  border-radius: 0 15px;
+}
+
+.dashboard .userId {
+  text-align: center;
+  font-size: 10px;
+  margin: 8px;
+  text-transform: uppercase;
+}
+
+.nameGroup {
+  width: fit-content;
+  margin: 24px auto;
+}
+
+.nameGroup .name {
+  font-size: 32px;
+  font-weight: 200;
+  color: #fadd98;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.profileHr {
+  border-bottom: 3px double #00ffd0;
+  border-radius: 5px;
+}
+
+.nameGroup .username {
+  font-size: small;
+  font-weight: 400;
+  color: #797777;
+  text-align: right;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-button {
+  border-bottom: 1px solid #ffffff95;
+  border-radius: 0;
+  text-align: left;
+  color: #fafafa;
+  transition: all 0.4s;
+  font-weight: 200;
+  font-size: larger;
+}
+
+.dashboard-button:hover {
+  border-bottom: 1px groove #fd9800;
+  border-style: groove;
+  scale: 1.02;
+  color: #eaf6a5;
+  background-color: #3b3b3b;
+}
