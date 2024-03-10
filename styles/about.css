@@ -1,0 +1,173 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #c4e0fb;
+}
+
+header {
+  background: url();
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.headerHead {
+  width: 80%;
+  font-size: 28px;
+}
+
+.headerHead span {
+  color: #fa9200;
+}
+
+.headerMulearnSection {
+  border: 3px solid #6c00fa;
+  border-radius: 10px;
+}
+
+.headerMulogo {
+  width: 25%;
+}
+
+.card {
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.card:hover {
+  scale: 1.3;
+}
+
+.card:hover img {
+  transition: all 0.5s;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 0 10px #00000080;
+}
+
+.card .card-body .card-title:hover {
+  transition: all 1s;
+  color: #6c00fa !important;
+}
+
+.hero-button-1,
+.hero-button-2 {
+  border: none;
+  background-color: transparent;
+  display: inline;
+  transition: all 1s, box-shadow 0.3s;
+  border-radius: 5px;
+}
+
+.hero-button-1 {
+  border: 1px solid green;
+  color: green;
+}
+
+.hero-button-2 {
+  background-color: green;
+  color: white;
+}
+
+.button-sec:hover .hero-button-1 {
+  background-color: green;
+  color: white;
+  border-radius: 5px;
+}
+
+.button-sec:hover .hero-button-2 {
+  background-color: transparent;
+  border: 1px solid green;
+  color: green;
+  border-radius: 5px;
+}
+
+.hero-button-1:hover,
+.hero-button-2:hover {
+  box-shadow: -3px -3px 5px #c4e0fb, 0 0 5px #000;
+  scale: 1.05;
+}
+
+.headerMulearnSection:hover {
+  transition: all 1s;
+  scale: 1.05;
+}
+
+.featureItem {
+  background-color: #80008040;
+  border-radius: 5px;
+  margin: 8px;
+}
+
+.featureItem:hover img {
+  transition: all 1.5s;
+  scale: 1.4;
+}
+
+.featureButton {
+  border: none;
+  background-color: transparent;
+  width: 100%;
+}
+
+.featureImg {
+  width: 70px;
+}
+
+.accordion-hr {
+  width: 75%;
+  margin: 16px auto;
+  border: 2px solid #00000084;
+  border-radius: 5px;
+}
+
+#alertDiv {
+  display: none;
+  position: fixed;
+  bottom: -20px;
+  z-index: 2;
+  width: 95%;
+  transition: all 1s;
+}
+
+#alertDiv #closeAlert {
+  float: right;
+}
+
+#form {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+
+  display: none;
+  background-color: #f9f9f9e6;
+  padding: 20px;
+}
+
+button {
+  margin: 10px 0;
+  display: block;
+}
+
+input {
+  display: inline;
+  max-width: 40%;
+  margin: 5px;
+}
+
+.task-item {
+  background-color: #acff2f72;
+  padding: 10px;
+}
+
+@media (min-width: 768px) {
+  .headerHead {
+    font-size: 40px;
+  }
+}
