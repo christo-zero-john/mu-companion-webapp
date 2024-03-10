@@ -27,9 +27,7 @@
     <div class="navDiv bg-violet sticky-top">
       <nav class="navbar navbar-dark bg-dark navbar-expand-md">
         <div class="container-fluid">
-          <a class="navbar-brand text-violet" href="/about.html"
-            >MU-companion</a
-          >
+          <a class="navbar-brand" href="/about.html">MU-companion</a>
           <button
             class="navbar-toggler"
             type="button"
@@ -63,7 +61,7 @@
       </nav>
     </div>
 
-    <header class="dashboard py-3">
+    <header class="dashboard py-3 ">
       <div class="w-fit mx-auto">
         <h1
           class="dashboardTitle d-block mx-auto px-3 display-1 fw-100 m-3 mb-4 text-secondary border-end"
@@ -76,10 +74,10 @@
         alt=""
         class="profilePic d-block mx-auto"
       />
-      <p class="userId fw-100" id="userId">ID: ECXDONEIBFII83NJ</p>
+      <p class="userId fw-100" id="userId">ID: USERID</p>
       <div class="nameGroup">
-        <h2 class="name" id="name">Super Bro</h2>
-        <p class="username" id="username">@superbro</p>
+        <h2 class="name" id="name">DISPLAY NAME</h2>
+        <p class="username" id="username">@username</p>
       </div>
       <hr class="profileHr" />
     </header>
@@ -97,21 +95,21 @@
         type="button"
         onclick="interface.printTrackedTasks()"
       >
-        View Scheduled Tasks
+        Your Tasks List
       </button>
       <button
         class="btn col-12 col-md-4 mx-md-5 dashboard-button"
         type="button"
         onclick="interface.printCompletedTasks()"
       >
-        View Completed Tasks
+        Completed Tasks
       </button>
       <button
         class="btn col-12 col-md-4 mx-md-5 dashboard-button"
         type="button"
         onclick="interface.printRemovedTracks()"
       >
-        View Descheduled Tasks
+        Removed Tasks
       </button>
 
       <button
@@ -119,21 +117,11 @@
         type="button"
         onclick="interface.printAllTasks()"
       >
-        View mulearn Tasks
+        All mulearn Tasks
       </button>
-
-      <!-- modal -->
-
-      <!-- <button
-        data-bs-toggle="modal"
-        onclick="interface.printConfirmModal('This is some message')"
-        data-bs-target="#confirmModal"
-      >
-        modal
-      </button> -->
     </main>
 
-    
+
 
     <!-- Bootstrap JavaScript Libraries -->
     <script
@@ -148,7 +136,11 @@
       crossorigin="anonymous"
     ></script>
     <!-- jquery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
     <!-- app script -->
     <!-- firebase scripts -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
