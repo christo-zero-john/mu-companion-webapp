@@ -1,0 +1,101 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: oxanium, sans-serif;
+}
+
+#dataDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.task-item {
+  background-color: #2d2d2d;
+  color: #fff;
+  padding: 16px;
+  margin: 16px 0;
+  border-radius: 5px;
+}
+
+.task-item .title {
+  font-size: larger;
+  font-weight: 600;
+  display: inline;
+}
+
+.task-item .ig {
+  display: inline;
+  background-color: #ff9900;
+  border-radius: 5px;
+  padding: 4px 8px;
+  margin: 8px;
+  font-size: 10px;
+  color: #ffffff;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.task-item .hashtag {
+  background-color: #ffffff0e;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: small;
+  margin: 16px 0;
+}
+
+.task-item .karma {
+  font-size: x-large;
+  float: right;
+  background-color: #4b320d;
+  border-radius: 10%;
+  padding: 16px;
+}
+.totalPeopleCurrentlyTracking {
+  background-color: #413959;
+}
+
+.totalPeopleCompleted {
+  background-color: #365139;
+}
+
+.totalPeopleCurrentlyTracking,
+.totalPeopleCompleted {
+  padding: 2px 20px 2px 0;
+  border-radius: 30px 5px 5px 30px;
+}
+
+.task-item .totalPeopleCurrentlyTracking,
+.task-item .totalPeopleCompleted {
+  display: inline;
+  margin: 0 20px;
+}
+
+.taskTrackedIcon,
+.trackTaskIcon,
+.markAsCompleteIcon,
+.taskCompletedIcon,
+.deleteIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.task-item .totalPeopleCurrentlyTracking .txt,
+.task-item .totalPeopleCompleted .txt {
+  font-size: 10px;
+}
+
+.task-item button {
+  float: right;
+  background: none;
+  border: 0;
+  margin: 0 4px;
+}
+.task-item button img {
+  width: 40px;
+  height: auto;
+}
