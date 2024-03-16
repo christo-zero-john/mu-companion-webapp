@@ -54,6 +54,7 @@
 
 #alertDiv {
   display: none;
+  z-index: 3;
   width: 100%;
   height: fit-content;
   transition: all 0.5s;
@@ -128,6 +129,7 @@
   border-radius: 10%;
   padding: 16px;
 }
+
 .totalPeopleCurrentlyTracking {
   background-color: #413959;
 }
@@ -169,7 +171,35 @@
   border: 0;
   margin: 0 4px;
 }
+
 .task-item button img {
   width: 40px;
   height: auto;
 }
+
+form input,
+select,
+textarea {
+  margin: 10px;
+  padding: 5px;
+  width: 45%;
+}
+
+form button {
+  transition: all 0.5s;
+  border: 0;
+  background-color: green;
+  color: wheat;
+  font-size: 24px;
+  display: block;
+  margin: 10px auto;
+  padding: 5px 15%;
+  border-radius: 5px;
+}
+
+form button:hover {
+  background-color: #016401;
+  color: #fbfbfb;
+}
+
+

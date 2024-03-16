@@ -16,10 +16,47 @@
     <title>mu Companion: Your dearest mulearn companion</title>
   </head>
   <body class="en-Oxanium">
-    <div id="alertDiv" class="small alert alert-danger mx-auto"></div>
-    <div id="dataDiv"></div>
-    <div id="form"></div>
-    <div id="navBar"></div>
+    <div class="navDiv bg-violet sticky-top">
+      <nav class="navbar navbar-light bg-light navbar-expand-md">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/about.html">MU-companion</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/dashboard.html"
+                  >Dashboard</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="##"
+                  >Get Started</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Open Source</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Collaborate</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" aria-disabled="true">Support Center</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
 
     <!-- hero section -->
     <header
@@ -38,15 +75,15 @@
         </p>
 
         <section class="button-sec text-center">
-          <button
+          <button onclick="window.location.href='/dashboard.html'"
             class="p-2 m-2 fs-5 fw-500 hero-button-1 col-6 col-md-12 text-center fw-400"
           >
-            Explore Task
+            Get Started
           </button>
           <button
             class="p-2 m-2 fs-5 fw-500 hero-button-2 col-5 col-md-12 text-center fw-400"
           >
-            Schedule Task
+            Explore Task
           </button>
         </section>
 
@@ -77,7 +114,7 @@
     </header>
 
     <!-- List of Interest groups / task categories section -->
-    <main class="my-5">
+    <main class="my-2">
       <div class="IGs">
         <h2
           class="display-3 py-3 small text-center fw-400 text-orange en-sirin"
@@ -626,7 +663,5 @@
       integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
       crossorigin="anonymous"
     ></script>
-
-
   </body>
 </html>

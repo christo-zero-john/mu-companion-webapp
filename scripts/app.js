@@ -1,7 +1,6 @@
-// global variables
+// Global variables
 var condition = false,
   temp,
-  formDiv,
   dataDivContainer,
   dataDiv,
   modalDiv,
@@ -21,9 +20,13 @@ var condition = false,
   getSubmissionChannel,
   submitBtn;
 
-// DOM element initialization
+var cloud = {
+  // Used to manage online processings
+  
+};
 
 var basicData = {
+  // Used to manage important data
   interestGroups: [
     {
       name: "General Enablement",
@@ -114,6 +117,7 @@ var basicData = {
 };
 
 var userData = {
+  // Used to manage user data
   name: "Christo John",
   userName: "christojohn",
   userId: "nx2jf9m49wm",
@@ -246,9 +250,7 @@ var appFunctions = {
       let tasks = localData.getTasks();
       tasks.push(task);
       localData.putTasks(tasks);
-      interface.hideForm();
       interface.printAlert("Task Added successfully");
-      interface.hideForm();
       interface.printAllTasks();
     }
   },
@@ -291,7 +293,7 @@ var appFunctions = {
         if (emptyFields.length != 0) {
           //console.log("Empty fields found", emptyFields);
           interface.printAlert(
-            `All fields is not filled. If all fields are filled and you think this is an error contact support! <br> Empty fields are: ${emptyFields}`
+            `Some required fields are not filled.<br> Empty fields are: ${emptyFields}. If all fields are filled and you think this is an error contact support! `
           );
           return false;
         } else {
@@ -484,7 +486,6 @@ var appFunctions = {
 var interface = {
   initializeDivs: function () {
     this.createDataDiv();
-    this.createFormDiv();
     this.createSearchDiv();
     this.createAlertDiv();
     this.createModalDiv();
@@ -501,13 +502,7 @@ var interface = {
       <div class="no-scrollbar" id="dataDiv"></div>
     `;
     dataDiv = document.getElementById("dataDiv");
-    dataDiv.innerHTML = "This is the dataDiv"
-  },
-  createFormDiv: function () {
-    let div = document.createElement("div");
-    div.id = "formDiv";
-    document.body.appendChild(div);
-    formDiv = document.getElementById("formDiv");
+    interface.hideDataDivContainer();
   },
   createSearchDiv: function () {
     let div = document.createElement("div");
@@ -594,8 +589,7 @@ var interface = {
     dataDiv.innerHTML = "";
   },
   taskForm: function () {
-    //console.log("Task Form UI Printed");
-    formDiv.style.display = "block";
+    interface.showDataDivContainer();
     let interestGroups = localData.getBasicData().interestGroups;
     let options = `<option class="" value="">Select Interest Group</option>`;
     for (x in interestGroups) {
@@ -604,17 +598,18 @@ var interface = {
         <option class="${interestGroups[x].code}" value="">${interestGroups[x].name}</option>
       `;
     }
-    formDiv.innerHTML = `
-        <button type="button" class="closeForm" onclick="interface.hideForm()">close</button>
-        <input id="taskName" type="text" class="" placeholder="Title(name)">
-        <input id="hashtag" type="text" class="" placeholder="Hashtag">
+    dataDiv.innerHTML = `
+      <form class="col-md-8 mx-auto">
+        <input id="taskName" type="text" class="" placeholder="Title(name)" required>
+        <input id="hashtag" type="text" class="" placeholder="Hashtag" required>
         <select name="interestGroups" id="ig">${options}</select>
-        <input id="description" type="text" class="" placeholder="Task Description">
-        <input id=taskLink" type="text" class="" placeholder="Link to task">
-        <input id="karma" type="text" class="" placeholder="Karma Points">
+        <textarea id="description" type="text" class="" placeholder="Task Description"></textarea>
+        <input id="taskLink" type="text" class="" placeholder="Link to task">
+        <input id="karma" type="text" class="" placeholder="Karma Points" required>
         <input id="taskChannel" type="text" class="" placeholder="Channel which defines this task">
         <input id="submissionChannel" type="text" class="" placeholder="Channel to submit task">
         <button id="submitBtn" type="button">Add Task</button>
+      </form>
       `;
     getName = document.getElementById("taskName");
     getHashtag = document.getElementById("hashtag");
@@ -639,9 +634,6 @@ var interface = {
         }
       }
     });
-  },
-  hideForm: function () {
-    formDiv.style.display = "none";
   },
   addTaskForm: function () {
     //console.log("Add task UI Printed");
@@ -826,6 +818,7 @@ async function main() {
   interface.initializeDivs();
   localData.initializeLocalStorage();
 }
+
 // console.log(localData.getUserData());
 
 //----------------------------------------------------------------------------------------
