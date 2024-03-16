@@ -16,7 +16,7 @@ var basicData = {
   moderators: [],
 };
 
-var app, db, taskCollection;
+var app, db;
 
 // firebase is initialized in the main function of script.js
 function initializeFirebase() {
@@ -26,13 +26,27 @@ function initializeFirebase() {
   console.log("firebse initialized sucessfully");
 }
 
-function printN(obj) {
-  console.log("printN", obj);
-}
+var cloud = {
+  addTaskToCollection: function (task) {
+    db.collection("tasks")
+      .doc(task.id)
+      .set(task)
+      .then(() => {
+        console.log("Data Written succesfully");
+      });
+  },
 
-function putTaskToCollection(task, collectionName) {
-  console.log("putTaskToCollection triggered");
-  return new Promise((resolve) => {
-    db.collection(collectionName).doc(task.id).set(task);
-  });
-}
+  getAllTasksFromDB: function () {
+    let tasks = [];
+    return new Promise((resolve, reject) => {
+      db.collection("tasks")
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            tasks.push(doc.data());
+          });
+          localData.putTasks(tasks);
+        });
+    });
+  },
+};

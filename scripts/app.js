@@ -20,11 +20,6 @@ var condition = false,
   getSubmissionChannel,
   submitBtn;
 
-var cloud = {
-  // Used to manage online processings
-  
-};
-
 var basicData = {
   // Used to manage important data
   interestGroups: [
@@ -175,7 +170,7 @@ var localData = {
   },
   getTasks: function () {
     // function to retrieve all tasks from localStorage
-    //console.log("this.getTasks triggered");
+    console.log("this.getTasks triggered");
     return JSON.parse(localStorage.getItem("tasks"));
   },
   putTasks: function (tasks) {
@@ -202,18 +197,6 @@ var localData = {
   putUserTasks: function (data) {
     //console.log("putUserTasks Triggered");
     localStorage.setItem("userTasks", JSON.stringify(data));
-  },
-};
-
-var tasksMods = {
-  trackTask: function (id) {
-    let tasks = localData.getTasks();
-    let index = appFunctions.getTaskIndex(id);
-    tasks[index].totalPeopleTracked++;
-    tasks[index].totalPeopleCurrentlyTracking++;
-    localData.putTasks(tasks);
-    console.log(tasks[index]);
-    console.log(localData.getTasks());
   },
 };
 
@@ -248,7 +231,7 @@ var appFunctions = {
       console.log(task);
       //console.log("Task ID is :", task.id);
       let tasks = localData.getTasks();
-      tasks.push(task);
+      cloud.addTaskToCollection(task);
       localData.putTasks(tasks);
       interface.printAlert("Task Added successfully");
       interface.printAllTasks();
@@ -337,7 +320,13 @@ var appFunctions = {
         return;
       } else {
         userData.trackedTasks.push(id);
-        tasksMods.trackTask(id);
+        let tasks = localData.getTasks();
+        let index = appFunctions.getTaskIndex(id);
+        tasks[index].totalPeopleTracked++;
+        tasks[index].totalPeopleCurrentlyTracking++;
+        localData.putTasks(tasks);
+        console.log(tasks[index]);
+        console.log(localData.getTasks());
         userData.totalTracking++;
       }
       if (appFunctions.validateTracking(userData.removedTracks, id)) {
@@ -367,9 +356,11 @@ var appFunctions = {
       } from your tasks list. You can see Removed tasks can in the Removed tasks list.`
     );
     if (condition == true) {
+      console.log("Condition true")
       let userData = localData.getUserData();
       let trackedTasks = userData.trackedTasks;
       let tasks = localData.getTasks();
+      console.log(tasks);
       let index = appFunctions.getTaskIndex(id);
       console.log(this.getTaskById(id), index);
       tasks[index].totalPeopleCurrentlyTracking--;
@@ -499,7 +490,7 @@ var interface = {
       <div class="header">
         <button class="close" onclick="interface.hideDataDivContainer()">Go Back</button>
       </div>
-      <div class="no-scrollbar" id="dataDiv"></div>
+      <div class="" id="dataDiv"></div>
     `;
     dataDiv = document.getElementById("dataDiv");
     interface.hideDataDivContainer();
@@ -817,6 +808,8 @@ function delay(ms) {
 async function main() {
   interface.initializeDivs();
   localData.initializeLocalStorage();
+  initializeFirebase();
+  console.log(await cloud.getAllTasksFromDB());
 }
 
 // console.log(localData.getUserData());
