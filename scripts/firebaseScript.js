@@ -8,14 +8,6 @@ const firebaseConfig = {
   measurementId: "G-H4LCXMW3J7",
 };
 
-var basicData = {
-  totalUsers: 0,
-  totalTasks: 0,
-  lastTaskId: 0x1f4dc2a0b8fe54,
-  admins: [],
-  moderators: [],
-};
-
 var app, db;
 
 // firebase is initialized in the main function of script.js
@@ -27,16 +19,55 @@ function initializeFirebase() {
 }
 
 var cloud = {
-  addTaskToCollection: function (task) {
-    db.collection("tasks")
-      .doc(task.id)
-      .set(task)
+  getBasicData: async function () {
+    return new Promise((resolve) => {
+      db.collection("basicData")
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            data = doc.data();
+          });
+          resolve(data);
+        });
+    });
+  },
+
+  putBasicData: function (data) {
+    db.collection("basicData")
+      .doc("data")
+      .set(data)
       .then(() => {
-        console.log("Data Written succesfully");
+        console.log("Basic Data written successfully");
       });
   },
 
+  updatePropertyOfBasicData: function (property) {
+    let dataRef = db.collection("basicData").doc("data");
+    dataRef.update({ channels: property }).then(() => {
+      console.log("Update success");
+    });
+  },
+
+  pushPropertyToBasicData: function (property) {
+    this.updatePropertyOfBasicData(property);
+  },
+
+  addTaskToCollection: async function (task) {
+    console.log(task);
+    let context = new Promise((resolve) => {
+      db.collection("tasks")
+        .doc(task.id)
+        .set(task)
+        .then(() => {
+          console.log("Data Written succesfully");
+        });
+      getAllTasksFromDB();
+      resolve(1);
+    });
+  },
+
   getAllTasksFromDB: function () {
+    // Takes all tasks from the firestore and save as tasks in the localStorage
     let tasks = [];
     return new Promise((resolve, reject) => {
       db.collection("tasks")
@@ -46,7 +77,23 @@ var cloud = {
             tasks.push(doc.data());
           });
           localData.putTasks(tasks);
+          resolve(1);
+        })
+        .catch(reject);
+    });
+  },
+
+  deleteTask: async function (id) {
+    return new Promise((resolve) => {
+      db.collection("tasks")
+        .doc(id)
+        .delete()
+        .then(() => {
+          console.log("Task deleted successfully");
+          this.getAllTasksFromDB();
+          resolve(1);
         });
     });
   },
+  
 };

@@ -142,31 +142,10 @@ var localData = {
     } else {
       //console.log("User data Found!", this.getUserData());
     }
-
-    if (this.getTasks() == null || this.getTasks() == undefined) {
-      //console.log("No tasks Found");
-      this.putTasks(new Array());
-      //console.log("tasks initialization : success", this.getTasks());
-    } else {
-      //console.log("Tasks found", this.getTasks());
-    }
-
-    if (this.getBasicData() == null || this.getBasicData() == undefined) {
-      console.log("getBasicData Not Found");
-      this.putBasicdata(basicData);
-      console.log("getBasicData initialization : success", this.getBasicData());
-    } else {
-      console.log("Basicdata found", this.getBasicData());
-    }
+    cloud.getAllTasksFromDB();
   },
   clearLocalStorage: function () {
     localStorage.removeItem("userData");
-  },
-  getBasicData: function () {
-    return JSON.parse(localStorage.getItem("basicData"));
-  },
-  putBasicdata: function (data) {
-    localStorage.setItem("basicData", JSON.stringify(data));
   },
   getTasks: function () {
     // function to retrieve all tasks from localStorage
@@ -201,18 +180,21 @@ var localData = {
 };
 
 var appFunctions = {
-  generateTaskId: function () {
+  generateTaskId: async function () {
+    let basicData;
     //console.log("Generating Task ID");
-    let basicData = localData.getBasicData();
-    basicData.lastTaskId -= 127;
-    localData.putBasicdata(basicData);
-    //console.log("Generated ID", basicData.lastTaskId.toString(36).toUpperCase());
+    await cloud.getBasicData().then((res) => {
+      basicData = res;
+    });
+    basicData.lastTaskId -= Math.random() * 169;
+    console.log(basicData);
     return basicData.lastTaskId.toString(36).toUpperCase();
   },
-  addTask: function () {
+  addTask: async function () {
     //console.log("Add task Trigered");
+
     let task = {
-      id: appFunctions.generateTaskId(),
+      id: "",
       name: getName.value,
       hashtag: getHashtag.value,
       ig: getIg.value == "" ? "none" : getIg.value,
@@ -223,6 +205,9 @@ var appFunctions = {
       submissionChannel:
         getSubmissionChannel.value == "" ? "none" : getSubmissionChannel.value,
     };
+    await appFunctions.generateTaskId().then((res) => {
+      task.id = res;
+    });
     if (this.validateForm(task, "addTask") == true) {
       task.trackTask = 0;
       task.totalPeopleCompleted = 0;
@@ -231,8 +216,7 @@ var appFunctions = {
       console.log(task);
       //console.log("Task ID is :", task.id);
       let tasks = localData.getTasks();
-      cloud.addTaskToCollection(task);
-      localData.putTasks(tasks);
+      await cloud.addTaskToCollection(task);
       interface.printAlert("Task Added successfully");
       interface.printAllTasks();
     }
@@ -356,7 +340,7 @@ var appFunctions = {
       } from your tasks list. You can see Removed tasks can in the Removed tasks list.`
     );
     if (condition == true) {
-      console.log("Condition true")
+      console.log("Condition true");
       let userData = localData.getUserData();
       let trackedTasks = userData.trackedTasks;
       let tasks = localData.getTasks();
@@ -376,7 +360,6 @@ var appFunctions = {
           interface.printAlert(
             "Task Removed successfully. You can view it in the removed tracks list"
           );
-          interface.printTrackedTasks();
           console.log("Task removed from the list");
           switch (context) {
             case "all": {
@@ -403,38 +386,24 @@ var appFunctions = {
     );
     if (condition == true) {
       let userData = localData.getUserData();
-      let tasks = localData.getTasks();
-      for (x in tasks) {
-        if (tasks[x].id == id) {
-          //console.log("Task found at ", x);
-          tasks.splice(x, 1);
-          if (userData.trackedTasks.includes(id)) {
-            //console.log("Task found in trackedTasks");
-            userData.trackedTasks.splice(userData.trackedTasks.indexOf(id), 1);
-          }
-          if (userData.removedTracks.includes(id)) {
-            //console.log("Task found in removedTracks");
-            userData.removedTracks.splice(
-              userData.removedTracks.indexOf(id),
-              1
-            );
-          }
-          if (userData.completedTasks.includes(id)) {
-            userData.completedTasks.splice(
-              userData.completedTasks.indexOf(id),
-              1
-            );
-            userData.totalKarma -= +appFunctions.getTaskById(id).karma;
-          }
 
-          localData.putTasks(tasks);
-          localData.putUserData(userData);
-          interface.printAlert(
-            `Task and all its assosciated data deleted successfully`
-          );
-        }
+      if (userData.trackedTasks.includes(id)) {
+        //console.log("Task found in trackedTasks");
+        userData.trackedTasks.splice(userData.trackedTasks.indexOf(id), 1);
       }
-
+      if (userData.removedTracks.includes(id)) {
+        //console.log("Task found in removedTracks");
+        userData.removedTracks.splice(userData.removedTracks.indexOf(id), 1);
+      }
+      if (userData.completedTasks.includes(id)) {
+        userData.completedTasks.splice(userData.completedTasks.indexOf(id), 1);
+        userData.totalKarma -= +appFunctions.getTaskById(id).karma;
+      }
+      await cloud.deleteTask(id);
+      localData.putUserData(userData);
+      interface.printAlert(
+        `Task and all its assosciated data deleted successfully`
+      );
       interface.deleteTasks();
     }
   },
@@ -579,9 +548,10 @@ var interface = {
   clearDataDiv: function () {
     dataDiv.innerHTML = "";
   },
-  taskForm: function () {
+  taskForm: async function () {
     interface.showDataDivContainer();
-    let interestGroups = localData.getBasicData().interestGroups;
+    let data = await cloud.getBasicData();
+    interestGroups = data.interestGroups;
     let options = `<option class="" value="">Select Interest Group</option>`;
     for (x in interestGroups) {
       // console.log("adding options");
@@ -624,11 +594,12 @@ var interface = {
           submitBtn.disabled = false;
         }
       }
+      return true;
     });
   },
-  addTaskForm: function () {
+  addTaskForm: async function () {
     //console.log("Add task UI Printed");
-    interface.taskForm();
+    await interface.taskForm();
     submitBtn.addEventListener("click", function () {
       appFunctions.addTask();
     });
@@ -805,11 +776,42 @@ function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+let channels = [
+  {
+    name: "#lvl-1-info",
+    link: "https://discord.com/channels/771670169691881483/1115381414309920899",
+  },
+  {
+    name: "#lvl-2-info",
+    link: "https://discord.com/channels/771670169691881483/1115381636352184430",
+  },
+  {
+    name: "#lvl-3-info",
+    link: "https://discord.com/channels/771670169691881483/1115381777792499805",
+  },
+  {
+    name: "#lvl-4-info",
+    link: "https://discord.com/channels/771670169691881483/1115381876585140406",
+  },
+  {
+    name: "#lvl-5-info",
+    link: "https://discord.com/channels/771670169691881483/1157090942235451392",
+  },
+  {
+    name: "#lvl-6-info",
+    link: "https://discord.com/channels/771670169691881483/1157091009222692926",
+  },
+  {
+    name: "#lvl-7-info",
+    link: "https://discord.com/channels/771670169691881483/1157091068945375232",
+  },
+];
+
 async function main() {
+  initializeFirebase();
   interface.initializeDivs();
   localData.initializeLocalStorage();
-  initializeFirebase();
-  console.log(await cloud.getAllTasksFromDB());
+  cloud.pushPropertyToBasicData(channels);
 }
 
 // console.log(localData.getUserData());
@@ -817,11 +819,3 @@ async function main() {
 //----------------------------------------------------------------------------------------
 main();
 // localStorage.removeItem("userData");
-
-// I want to implement something like window.confirm but with bootstrap modal. When the delete button is clicked deleteTask(id) function like below function deleteTask(id){
-//   if(interface.confirm){
-//     //delete task code
-//   }
-// }
-
-// the interface.confirm opens the modal with confirm and delcine buttons . If confirm is pressed the function returns 1 if decline is pressed it return 0 to the deleteTask() function. How to implement it
