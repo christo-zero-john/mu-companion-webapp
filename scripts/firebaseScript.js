@@ -61,7 +61,7 @@ var cloud = {
         .then(() => {
           console.log("Data Written succesfully");
         });
-      getAllTasksFromDB();
+      this.getAllTasksFromDB();
       resolve(1);
     });
   },
@@ -84,16 +84,16 @@ var cloud = {
   },
 
   deleteTask: async function (id) {
-    return new Promise((resolve) => {
+    let ctx = new Promise((resolve) => {
       db.collection("tasks")
         .doc(id)
         .delete()
         .then(() => {
           console.log("Task deleted successfully");
-          this.getAllTasksFromDB();
           resolve(1);
         });
     });
+    await this.getAllTasksFromDB();
+    return ctx;
   },
-  
 };

@@ -7,6 +7,7 @@ var condition = false,
   modalTitle,
   modalBody,
   modalBtn,
+  modalCloseBtn,
   alertDiv,
   searchDiv,
   searchBox,
@@ -482,6 +483,7 @@ var interface = {
             <div class="modal-header bg-dark">
               <h5 class="modal-title text-wheat" id="modalTitle">Confirm</h5>
               <button
+                id="closeModal" 
                 type="button"
                 class="btn-close bg-danger"
                 data-bs-dismiss="modal"
@@ -505,6 +507,7 @@ var interface = {
     modalTitle = document.getElementById("modalTitle");
     modalBody = document.getElementById("modalBody");
     modalBtn = document.getElementById("modalBtn");
+    modalCloseBtn = document.getElementById("closeModal");
   },
   createAlertDiv: function () {
     let div = document.createElement("div");
@@ -522,6 +525,10 @@ var interface = {
       modalBtn.addEventListener("click", function () {
         resolve(true);
         $("#confirmModal").modal("hide");
+      });
+
+      modalCloseBtn.addEventListener("click", function () {
+        resolve(false);
       });
     });
     return confirmAction;
