@@ -80,9 +80,11 @@
   color: white;
   transition: all 1s;
 }
+
 #alertDiv p {
   text-transform: capitalize;
 }
+
 #alertDiv button:hover {
   background-color: #fb2929;
   box-shadow: 1px 1px 3px #737373;
@@ -190,8 +192,8 @@ textarea {
 form button {
   transition: all 0.5s;
   border: 0;
-  background-color: green;
-  color: wheat;
+  background-color: rgb(1, 113, 1);
+  color: white;
   font-size: 24px;
   display: block;
   margin: 10px auto;
@@ -202,6 +204,18 @@ form button {
 form button:hover {
   background-color: #016401;
   color: #fbfbfb;
+}
+
+form button:disabled {
+  opacity: 0.7;
+  background-color: green;
+  color: wheat;
+}
+
+.channelItem{
+  border: 1px solid #fff;
+  border-radius: 5px;
+  padding: 12px;
 }
 
 @media (min-width: 764px) {

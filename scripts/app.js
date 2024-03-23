@@ -114,8 +114,8 @@ var basicData = {
 
 var userData = {
   // Used to manage user data
-  name: "Christo John",
-  userName: "christojohn",
+  name: "Beta User",
+  userName: "beta",
   userId: "nx2jf9m49wm",
   totalTracking: 0,
   removedTracks: [],
@@ -217,7 +217,8 @@ var appFunctions = {
       console.log(task);
       //console.log("Task ID is :", task.id);
       let tasks = localData.getTasks();
-      await cloud.addTaskToCollection(task);
+      await cloud.saveTaskToDB(task);
+      await cloud.getAllTasksFromDB();
       interface.printAlert("Task Added successfully");
       interface.printAllTasks();
     }
@@ -305,19 +306,15 @@ var appFunctions = {
         return;
       } else {
         userData.trackedTasks.push(id);
-        let tasks = localData.getTasks();
-        let index = appFunctions.getTaskIndex(id);
-        tasks[index].totalPeopleTracked++;
-        tasks[index].totalPeopleCurrentlyTracking++;
-        localData.putTasks(tasks);
-        console.log(tasks[index]);
-        console.log(localData.getTasks());
+        let task = appFunctions.getTaskById(id);
+        task.totalPeopleTracked++;
+        task.totalPeopleCurrentlyTracking++;
+        cloud.updateTaskInDB(task);
+        await cloud.getAllTasksFromDB();
         userData.totalTracking++;
       }
       if (appFunctions.validateTracking(userData.removedTracks, id)) {
-        //console.log("Task found in removed tracks List");
         userData.removedTracks.splice(userData.removedTracks.indexOf(id), 1);
-        //console.log("Task removed from removed tracks List");
       }
       localData.putUserData(userData);
       interface.printAlert("Task tracked successfully");
@@ -344,13 +341,10 @@ var appFunctions = {
       console.log("Condition true");
       let userData = localData.getUserData();
       let trackedTasks = userData.trackedTasks;
-      let tasks = localData.getTasks();
-      console.log(tasks);
-      let index = appFunctions.getTaskIndex(id);
-      console.log(this.getTaskById(id), index);
-      tasks[index].totalPeopleCurrentlyTracking--;
-      console.log(this.getTaskById(id), index);
-      localData.putTasks(tasks);
+      let task = appFunctions.getTaskById(id);
+      task.totalPeopleCurrentlyTracking--;
+      await cloud.updateTaskInDB(task);
+      await cloud.getAllTasksFromDB();
       for (x in trackedTasks) {
         let task = appFunctions.getTaskById(trackedTasks[x]);
         if (task.id == id) {
@@ -555,22 +549,59 @@ var interface = {
   clearDataDiv: function () {
     dataDiv.innerHTML = "";
   },
+  addChannelForm: function () {
+    this.showDataDivContainer();
+    dataDiv.innerHTML = `
+      <div class="addChannelForm">
+        <input type="text" placeholder="Channel Name" id="channelName"/>
+        <input type="text" placeholder="Channel Id" id="channelId"/>
+        <button type="button" id="submitChannelBtn">Add Channel</button>
+      </div>
+    `;
+    let submitBtn = document.getElementById("submitChannelBtn");
+    let channelname = document.getElementById("channelName");
+    let channelId = document.getElementById("channelId");
+    submitBtn.addEventListener("click", function () {
+      // values passed to cloud are channel name, and the extracted channel id from the channel link
+      cloud.createChannel(channelname.value, channelId.value);
+      interface.hideDataDivContainer();
+    });
+  },
+  printChannels: async function () {
+    let channels = await cloud.getAllChannels();
+    this.clearDataDiv();
+    let content = `
+      <div class="channelContainer d-flex flex-row justify-content-center align-items-center flex-wrap">
+    `;
+    for (x in channels) {
+      content += `
+        <div class="channelItem col-11 col-md-4 m-2">
+          <p class="channelName d-inline p-2">${channels[x].name}</p>
+          <p class="cid d-inline p-2">${channels[x].id}</p>
+          <button class="delete btn btn-danger px-4 py-1" onclick="cloud.deleteChannel('${channels[x].id}')">Dlt</button>
+        </div>
+      `;
+    }
+    content += `</div>`;
+    dataDiv.innerHTML = content;
+    this.showDataDivContainer();
+  },
   taskForm: async function () {
     interface.showDataDivContainer();
     let data = await cloud.getBasicData();
     interestGroups = data.interestGroups;
-    let options = `<option class="" value="">Select Interest Group</option>`;
+    let igOptions = `<option class="" value="">Select Interest Group</option>`;
     for (x in interestGroups) {
-      // console.log("adding options");
-      options += `
-        <option class="${interestGroups[x].code}" value="">${interestGroups[x].name}</option>
+      // console.log("adding igOptions");
+      igOptions += `
+        <option class="" value="${interestGroups[x].code}">${interestGroups[x].name}</option>
       `;
     }
     dataDiv.innerHTML = `
       <form class="col-md-8 mx-auto">
         <input id="taskName" type="text" class="" placeholder="Title(name)" required>
         <input id="hashtag" type="text" class="" placeholder="Hashtag" required>
-        <select name="interestGroups" id="ig">${options}</select>
+        <select name="interestGroups" id="ig">${igOptions}</select>
         <textarea id="description" type="text" class="" placeholder="Task Description"></textarea>
         <input id="taskLink" type="text" class="" placeholder="Link to task">
         <input id="karma" type="text" class="" placeholder="Karma Points" required>
@@ -783,42 +814,10 @@ function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-let channels = [
-  {
-    name: "#lvl-1-info",
-    link: "https://discord.com/channels/771670169691881483/1115381414309920899",
-  },
-  {
-    name: "#lvl-2-info",
-    link: "https://discord.com/channels/771670169691881483/1115381636352184430",
-  },
-  {
-    name: "#lvl-3-info",
-    link: "https://discord.com/channels/771670169691881483/1115381777792499805",
-  },
-  {
-    name: "#lvl-4-info",
-    link: "https://discord.com/channels/771670169691881483/1115381876585140406",
-  },
-  {
-    name: "#lvl-5-info",
-    link: "https://discord.com/channels/771670169691881483/1157090942235451392",
-  },
-  {
-    name: "#lvl-6-info",
-    link: "https://discord.com/channels/771670169691881483/1157091009222692926",
-  },
-  {
-    name: "#lvl-7-info",
-    link: "https://discord.com/channels/771670169691881483/1157091068945375232",
-  },
-];
-
 async function main() {
-  initializeFirebase();
+  await initializeFirebase();
   interface.initializeDivs();
   localData.initializeLocalStorage();
-  cloud.pushPropertyToBasicData(channels);
 }
 
 // console.log(localData.getUserData());

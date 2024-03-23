@@ -12,13 +12,14 @@ function setDashboard() {
         <button class="btn col-12 col-md-4 mx-md-5 dashboard-button" type="button" onclick="interface.addTaskForm()">
         Add mulearn Discord Tasks </button>
         <button class="btn col-12 col-md-4 mx-md-5  dashboard-button" type="button" onclick="interface.deleteTasks()"> Delete mulearn Discord Tasks </button>
+        <button class="btn col-12 col-md-4 mx-md-5  dashboard-button" type="button" onclick="interface.addChannelForm()"> Add Channel</button>
+        <button class="btn col-12 col-md-4 mx-md-5  dashboard-button" type="button" onclick="interface.printChannels()"> View/Delete Channels</button>
     `;
   }
 }
 
-function main() {
+function dashboard() {
   setDashboard();
 }
 
-main();
-console.log(localData.getUserData());
+dashboard();

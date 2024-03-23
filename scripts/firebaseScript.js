@@ -12,14 +12,17 @@ var app, db;
 
 // firebase is initialized in the main function of script.js
 function initializeFirebase() {
-  app = firebase.initializeApp(firebaseConfig);
-  // Initialize Cloud Firestore and get a reference to firestore service
-  db = firebase.firestore();
-  console.log("firebse initialized sucessfully");
+  return new Promise((resolve) => {
+    app = firebase.initializeApp(firebaseConfig);
+    // Initialize Cloud Firestore and get a reference to firestore service
+    db = firebase.firestore();
+    console.log("firebse initialized sucessfully");
+    resolve(1);
+  });
 }
 
 var cloud = {
-  getBasicData: async function () {
+  getBasicData: function () {
     return new Promise((resolve) => {
       db.collection("basicData")
         .get()
@@ -52,7 +55,7 @@ var cloud = {
     this.updatePropertyOfBasicData(property);
   },
 
-  addTaskToCollection: async function (task) {
+  saveTaskToDB: async function (task) {
     console.log(task);
     let context = new Promise((resolve) => {
       db.collection("tasks")
@@ -61,7 +64,6 @@ var cloud = {
         .then(() => {
           console.log("Data Written succesfully");
         });
-      this.getAllTasksFromDB();
       resolve(1);
     });
   },
@@ -95,5 +97,51 @@ var cloud = {
     });
     await this.getAllTasksFromDB();
     return ctx;
+  },
+
+  updateTaskInDB: async function (task) {
+    return new Promise((resolve) => {
+      db.collection("tasks")
+        .doc(task.id)
+        .set(task)
+        .then(() => {
+          console.log("Task updated and saved to DB");
+          resolve(1);
+        });
+    });
+  },
+
+  createChannel(cName, cID) {
+    console.log(cName, cID);
+    let channelref = db
+      .collection("basicData")
+      .doc("data")
+      .update({
+        channels: firebase.firestore.FieldValue.arrayUnion({
+          name: cName,
+          id: cID,
+        }),
+      });
+  },
+
+  getAllChannels: async function () {
+    let basicData = await this.getBasicData();
+    return new Promise((resolve) => {
+      resolve(basicData.channels);
+    });
+  },
+
+  deleteChannel: async function (cID) {
+    db.collection("basicData")
+      .doc("data")
+      .update({
+        channels: firebase.firestore.FieldValue.arrayRemove({ id: `${cID}` }),
+      })
+      .then(() => {
+        console.log("Delte Success", cID);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
