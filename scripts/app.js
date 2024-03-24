@@ -121,7 +121,7 @@ var userData = {
   removedTracks: [],
   trackedTasks: [],
   completedTasks: [],
-  roles: ["user"],
+  roles: ["superAdmin", "admin", "moderator", "user"],
   totalKarma: 0,
 };
 
@@ -824,4 +824,4 @@ async function main() {
 
 //----------------------------------------------------------------------------------------
 main();
-localStorage.removeItem("userData");
+// localStorage.removeItem("userData");
