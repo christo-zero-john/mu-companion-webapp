@@ -126,3 +126,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 new features.md
+demo.html

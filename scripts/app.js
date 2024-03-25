@@ -1,8 +1,18 @@
+// initalising tooltips
+const tooltipTriggerList = document.querySelectorAll(
+  '[data-bs-toggle="tooltip"]'
+);
+const tooltipList = [...tooltipTriggerList].map(
+  (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+);
+
 // Global variables
 var condition = false,
   temp,
   dataDivContainer,
   dataDiv,
+  searchDiv,
+  searchBox,
   modalDiv,
   modalTitle,
   modalBody,
@@ -114,6 +124,7 @@ var basicData = {
 
 var userData = {
   // Used to manage user data
+  profilePic: "",
   name: "Beta User",
   userName: "beta",
   userId: "nx2jf9m49wm",
@@ -121,7 +132,7 @@ var userData = {
   removedTracks: [],
   trackedTasks: [],
   completedTasks: [],
-  roles: ["superAdmin", "admin", "moderator", "user"],
+  roles: ["superAdmin", "moderator", "user"],
   totalKarma: 0,
 };
 
@@ -129,19 +140,14 @@ var localData = {
   /*
     Things in local Storage
     1. userData : To store userdata
-    2. tasks : To store tasks
-    3. userTasks : To store tasks created by the user
-    4. basicdata: To store common data. Retrieved from and stored in firebase and a local copy in user device
+    2. tasks : To store tasks.
   */
 
   initializeLocalStorage: function () {
-    //console.log("Initializing localStorage");
-    if (this.getUserData() == null || this.getUserData() == undefined) {
-      //console.log("No userData Found");
+    if (!this.getUserData()) {
       this.putUserData(userData);
-      //console.log("userData initialization : success", this.getUserData());
     } else {
-      //console.log("User data Found!", this.getUserData());
+      userData = this.getUserData();
     }
     cloud.getAllTasksFromDB();
   },
@@ -219,8 +225,10 @@ var appFunctions = {
       let tasks = localData.getTasks();
       await cloud.saveTaskToDB(task);
       await cloud.getAllTasksFromDB();
-      interface.printAlert("Task Added successfully");
-      interface.printAllTasks();
+      interface.printAlert(
+        `Task Added successfully. <button class="alertLink btn btn-light" onclick="interface.printAllTasks()">View</button>`
+      );
+      interface.addTaskForm();
     }
   },
   getTaskById: function (id) {
@@ -317,7 +325,9 @@ var appFunctions = {
         userData.removedTracks.splice(userData.removedTracks.indexOf(id), 1);
       }
       localData.putUserData(userData);
-      interface.printAlert("Task tracked successfully");
+      interface.printAlert(
+        `Task tracked successfully <button class="alertLink" onclick="interface.printTrackedTasks()">View</button>`
+      );
       switch (context) {
         case "all": {
           interface.printAllTasks();
@@ -344,16 +354,16 @@ var appFunctions = {
       let task = appFunctions.getTaskById(id);
       task.totalPeopleCurrentlyTracking--;
       await cloud.updateTaskInDB(task);
-      await cloud.getAllTasksFromDB();
       for (x in trackedTasks) {
         let task = appFunctions.getTaskById(trackedTasks[x]);
         if (task.id == id) {
           //console.log("Task Found");
           userData.trackedTasks.splice(userData.trackedTasks.indexOf(id), 1);
+          userData.totalTracking--;
           userData.removedTracks.push(id);
           localData.putUserData(userData);
           interface.printAlert(
-            "Task Removed successfully. You can view it in the removed tracks list"
+            `Task Removed successfully.     <button class="alertLink" onclick="interface.printRemovedTracks()">View</button>`
           );
           console.log("Task removed from the list");
           switch (context) {
@@ -381,7 +391,7 @@ var appFunctions = {
     );
     if (condition == true) {
       let userData = localData.getUserData();
-
+      await cloud.deleteTask(id);
       if (userData.trackedTasks.includes(id)) {
         //console.log("Task found in trackedTasks");
         userData.trackedTasks.splice(userData.trackedTasks.indexOf(id), 1);
@@ -394,7 +404,6 @@ var appFunctions = {
         userData.completedTasks.splice(userData.completedTasks.indexOf(id), 1);
         userData.totalKarma -= +appFunctions.getTaskById(id).karma;
       }
-      await cloud.deleteTask(id);
       localData.putUserData(userData);
       interface.printAlert(
         `Task and all its assosciated data deleted successfully`
@@ -402,23 +411,23 @@ var appFunctions = {
       interface.deleteTasks();
     }
   },
-  markAsCompleted: function (id) {
+  markAsCompleted: async function (id) {
     console.log("marking task as completed");
-    if (
-      window.confirm(
-        "Once you mark it as completed, you cannot track or schedule it again. DO NOT click OK if you are not sure about it!"
-      )
-    ) {
+    let condition = await interface.confirmActionModal(
+      "Once you mark it as completed, you cannot track or schedule it again. DO NOT click OK if you are not sure about it!"
+    );
+    if (condition) {
       let userData = localData.getUserData();
-      let tasks = localData.getTasks();
+      let task = appFunctions.getTaskById(id);
       userData.completedTasks.push(id);
       userData.trackedTasks.splice(userData.trackedTasks.indexOf(id), 1);
-      tasks[this.getTaskIndex(id)].totalPeopleCurrentlyTracking--;
-      tasks[this.getTaskIndex(id)].totalPeopleCompleted++;
+      task.totalPeopleCurrentlyTracking--;
+      task.totalPeopleCompleted++;
       userData.totalKarma += +this.getTaskById(id).karma;
       localData.putUserData(userData);
-      localData.putTasks(tasks);
-      interface.printAlert("Task successfully   marked as complete");
+      await cloud.updateTaskInDB(task);
+      interface.printAlert(`Task successfully   marked as complete
+      <button class="alertLink" onclick="interface.printCompletedTasks()">View</button>`);
       interface.printTrackedTasks();
     }
   },
@@ -433,15 +442,24 @@ var appFunctions = {
   },
   searchTask: function (searchTerm) {
     console.log(searchTerm);
+    let searchResults = [];
     let tasks = localData.getTasks();
-    console.log(tasks);
+    for (x in tasks) {
+      if (tasks[x].description.includes(searchTerm)) {
+        console.log("itemFound");
+        searchResults.push(tasks[x]);
+      }
+    }
+    interface.clearDataDiv();
+    for (x in searchResults) {
+      interface.printTask(searchResults[x]);
+    }
   },
 };
 
 var interface = {
   initializeDivs: function () {
     this.createDataDiv();
-    this.createSearchDiv();
     this.createAlertDiv();
     this.createModalDiv();
   },
@@ -454,16 +472,20 @@ var interface = {
       <div class="header">
         <button class="close" onclick="interface.hideDataDivContainer()">Go Back</button>
       </div>
+      <div class="" id="searchDiv">
+        <div class="search">
+          <input type="text" id="searchBox" placeholder="Search Something" />
+        </div>
+      </div>
       <div class="" id="dataDiv"></div>
     `;
     dataDiv = document.getElementById("dataDiv");
-    interface.hideDataDivContainer();
-  },
-  createSearchDiv: function () {
-    let div = document.createElement("div");
-    div.id = "searchDiv";
-    document.body.appendChild(div);
     searchDiv = document.getElementById("searchDiv");
+    searchBox = document.getElementById("searchBox");
+    searchBox.addEventListener("input", function () {
+      appFunctions.searchTask(searchBox.value);
+    });
+    interface.hideDataDivContainer();
   },
   createModalDiv: function () {
     let div = document.createElement("div");
@@ -532,6 +554,7 @@ var interface = {
   },
   hideDataDivContainer: function () {
     dataDivContainer.style.display = "none";
+    this.hideSearchDiv();
   },
   printAlert: async function (message) {
     alertDiv.style.display = "block";
@@ -793,20 +816,24 @@ var interface = {
       this.printTask(tasks[x], "delete");
     }
   },
-  searchTask: function () {
-    searchDiv = this.createSearchDiv();
-    searchDiv.innerHTML = "Search div";
-    searchDiv.innerHTML = `
-      <input
-      type="text"
-      class="searchBox"
-      id="searchBox"
-      placeholder="Enter Something"/>
+  hideSearchDiv: function (searchTerm) {
+    searchDiv.style.display = "none";
+  },
+  showSearchDiv: function (searchTerm) {
+    searchDiv.style.display = "block";
+    interface.printAllTasks();
+    this.showDataDivContainer();
+  },
+  localUserSetUp: function () {
+    dataDiv.innerHTML = `
+      <div class="localUserSignUp w-fit mx-auto">
+        <p class="text-secondary px-2 px-md-5">Seems Like you are new here, Let's sign you Up</p>
+        <p class="display-4 text-center fw-100 mt-5 mb-3">Setup User Profile</p>
+        <input type="text" class="fs-5 d-block d-md-inline mx-auto p-2" placeholder="Enter your Name">
+        <button class="btn btn-outline-success px-5 py-1 m-3 d-block d-md-inline mx-auto mx-md-4" onclick="">Sign Up</button>
+      </div>
     `;
-    searchBox = document.getElementById("searchBox");
-    searchBox.addEventListener("input", function () {
-      appFunctions.searchTask(searchBox.value);
-    });
+    this.showDataDivContainer();
   },
 };
 

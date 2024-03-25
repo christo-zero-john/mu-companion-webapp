@@ -41,14 +41,22 @@ var cloud = {
       .set(data)
       .then(() => {
         console.log("Basic Data written successfully");
+      })
+      .catch((err) => {
+        interface.printAlert(err);
       });
   },
 
   updatePropertyOfBasicData: function (property) {
     let dataRef = db.collection("basicData").doc("data");
-    dataRef.update({ channels: property }).then(() => {
-      console.log("Update success");
-    });
+    dataRef
+      .update({ channels: property })
+      .then(() => {
+        console.log("Update success");
+      })
+      .catch((err) => {
+        interface.printAlert(err);
+      });
   },
 
   pushPropertyToBasicData: function (property) {
@@ -63,6 +71,9 @@ var cloud = {
         .set(task)
         .then(() => {
           console.log("Data Written succesfully");
+        })
+        .catch((err) => {
+          interface.printAlert(err);
         });
       resolve(1);
     });
@@ -106,6 +117,7 @@ var cloud = {
         .set(task)
         .then(() => {
           console.log("Task updated and saved to DB");
+          this.getAllTasksFromDB();
           resolve(1);
         });
     });
@@ -121,6 +133,9 @@ var cloud = {
           name: cName,
           id: cID,
         }),
+      })
+      .catch((err) => {
+        interface.printAlert(`Error crating channel ${err}`);
       });
   },
 

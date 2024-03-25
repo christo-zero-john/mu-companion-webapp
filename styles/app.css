@@ -53,6 +53,28 @@
   overflow: auto;
 }
 
+#searchDiv{
+  background-color: #2d2d2d;
+  padding: 10px;
+  position: sticky;
+  top: 0;
+}
+
+#searchDiv #searchBox {
+  border: 0;
+  border-bottom: 2px solid #ffffffad;
+  background-color: #2d2d2d;
+  color: wheat;
+  font-weight: 500;
+  width: 75%;
+  height: 50px;
+  padding: 10px;
+  font-size: larger;
+  display: block;
+  margin: 10px auto;
+}
+
+
 #alertDiv {
   display: none;
   z-index: 2;
@@ -212,7 +234,7 @@ form button:disabled {
   color: wheat;
 }
 
-.channelItem{
+.channelItem {
   border: 1px solid #fff;
   border-radius: 5px;
   padding: 12px;
