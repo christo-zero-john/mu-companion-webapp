@@ -11,6 +11,7 @@
 
 .navbar-brand {
   color: #a882ee;
+  font-weight: 100;
 }
 
 .navbar-brand:hover {
@@ -31,20 +32,6 @@
   border-bottom: 2px solid #ffb700;
   color: #eaf6a5;
   background-color: #353434;
-}
-
-.welcome {
-  height: 50vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #fd980072;
-  border-radius: 5px;
-  margin: 10px;
-  font-size: 32px;
-  font-weight: 100;
-  color: #a882ee;
 }
 
 .dashboard .warning:hover {
@@ -105,7 +92,7 @@
 }
 
 .userStats {
-  background-color: #313131;
+  background:linear-gradient(#31313114 20%, #2a4043);
   padding: 20px 20px 0 20px;
   margin: 10px;
   border-radius: 5px;
@@ -162,4 +149,10 @@
   border-style: groove;
   color: #c4a5f6;
   background-color: #313131;
+}
+
+.footer:hover p{
+  transition: all 0.5s;
+  opacity: 1;
+  color: wheat;
 }

@@ -146,6 +146,7 @@ var localData = {
   initializeLocalStorage: function () {
     if (!this.getUserData()) {
       this.putUserData(userData);
+      cloud.incrementLocalUserCount();
     } else {
       userData = this.getUserData();
     }
@@ -729,6 +730,7 @@ var interface = {
     additionalData += `</div>`;
     dataDiv.innerHTML += `
         <div class="task-item col-11 col-md-5 mx-auto">
+        <div  onclick="interface.viewTaskItem('${task.id}')">
           <p class="title">${task.name}</p>
           <p class="ig small">${task.ig}</p>
           <p class="karma">${task.karma}</p>
@@ -740,14 +742,14 @@ var interface = {
           <p class="totalPeopleCompleted">
             <img src="/assets/img/taskCompletedIcon.png" alt="" class="taskTrackedIcon">
             <span class="txt">${task.totalPeopleCompleted}</span>   
-          </p>         
-
-          ${additionalData}
+          </p>   
+        </div>             
+        ${additionalData}
         </div>       
       `;
   },
-  printTaskDetails: function () {
-    interface.clearDataDiv();
+  viewTaskItem: function (id) {
+    console.log(`Printing item ${id}`);
   },
   printAllTasks: function () {
     interface.clearDataDiv();

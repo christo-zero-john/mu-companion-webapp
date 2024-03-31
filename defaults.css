@@ -37,6 +37,14 @@
   font-style: italic;
 }
 
+.openweb :nth-child(1){
+  color: red;
+}
+
+.openweb :nth-child(2){
+  color: green;
+}
+
 
 /* icons */
 .infoIcon{

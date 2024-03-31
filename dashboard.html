@@ -2,12 +2,13 @@
 <html lang="en">
   <head>
     <title>mulearn companion: Dashboard</title>
-    <!-- Required meta tags -->
+    <!-- Metadata tags -->
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
+    <link rel="shortcut icon" href="/assets/img/favicon.svg" type="image/x-icon">
 
     <!-- Bootstrap CSS v5.2.1 -->
     <link
@@ -25,9 +26,9 @@
   <body class="mb-5 bg-dark text-light no-scrollbar">
     <!-- nav bar -->
     <div class="navDiv bg-violet">
-      <nav class="navbar navbar-dark bg-dark navbar-expand-md">
+      <nav class="navbar navbar-dark bg-dark navbar-expand">
         <div class="container-fluid">
-          <a class="navbar-brand" href="/about.html">MU-companion</a>
+          <a class="navbar-brand" >MU-companion</a>
           <button
             class="navbar-toggler"
             type="button"
@@ -40,13 +41,16 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="/getting-started.html"
+                <a
+                  class="navbar-brand"
+                  aria-current="page"
+                  href="/getting-started.html"
                   >Get Started</a
                 >
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a class="nav-link" href="#">Open Source</a>
               </li>
               <li class="nav-item">
@@ -54,7 +58,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" aria-disabled="true">Support Center</a>
-              </li>
+              </li> -->
             </ul>
           </div>
         </div>
@@ -63,7 +67,6 @@
 
     <!-- User Dashboard profile section -->
     <header class="dashboard py-3" id="dashboard">
-      
       <div class="userProfile">
         <!-- currently inactive will be active after integrating cloud sync -->
         <img
@@ -86,6 +89,14 @@
       <button
         class="btn col-12 col-md-4 mx-md-5 dashboard-button"
         type="button"
+        onclick="interface.printAllTasks()"
+      >
+        All mulearn Tasks
+      </button>
+
+      <button
+        class="btn col-12 col-md-4 mx-md-5 dashboard-button"
+        type="button"
         onclick="interface.showSearchDiv()"
       >
         Find Task
@@ -97,13 +108,7 @@
       >
         Your Tasks List
       </button>
-      <button
-        class="btn col-12 col-md-4 mx-md-5 dashboard-button"
-        type="button"
-        onclick="interface.printCompletedTasks()"
-      >
-        Completed Tasks
-      </button>
+
       <button
         class="btn col-12 col-md-4 mx-md-5 dashboard-button"
         type="button"
@@ -115,11 +120,18 @@
       <button
         class="btn col-12 col-md-4 mx-md-5 dashboard-button"
         type="button"
-        onclick="interface.printAllTasks()"
+        onclick="interface.printCompletedTasks()"
       >
-        All mulearn Tasks
+        Completed Tasks
       </button>
     </main>
+
+    <footer class="footer bg-secondary w-100 text-center pb-2 fixed-bottom">
+      <p class="openweb bg-dark 0 p-0 m-0 op-09 p-2 small fw-100">
+        Powered By <span class="">open</span
+        ><span class="">web</span>.developers
+      </p>
+    </footer>
 
     <!-- Bootstrap JavaScript Libraries -->
     <script
@@ -145,6 +157,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
 
     <!-- app  script -->
+    <script src="/scripts/firebaseConfig.js"></script>
     <script src="/scripts/firebaseScript.js"></script>
     <script src="/scripts/app.js"></script>
     <link rel="stylesheet" href="/styles/app.css" />

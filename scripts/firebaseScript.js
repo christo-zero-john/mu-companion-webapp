@@ -1,13 +1,3 @@
-const firebaseConfig = {
-  apiKey: "AIzaSyBnXDgN_232yusg2fkwzExU6otohAwB1E8",
-  authDomain: "mulearn-companion.firebaseapp.com",
-  projectId: "mulearn-companion",
-  storageBucket: "mulearn-companion.appspot.com",
-  messagingSenderId: "596495539708",
-  appId: "1:596495539708:web:b36f127a9067ee5a306679",
-  measurementId: "G-H4LCXMW3J7",
-};
-
 var app, db;
 
 // firebase is initialized in the main function of script.js
@@ -22,6 +12,18 @@ function initializeFirebase() {
 }
 
 var cloud = {
+  incrementLocalUserCount: function () {
+    db.collection("basicData")
+      .doc("data")
+      .update({ localUserCount: firebase.firestore.FieldValue.increment(1) })
+      .then(() => {
+        console.log("User count incremented");
+      })
+      .catch((err) => {
+        interface.printAlert("Error", err);
+        console.log("Error", err);
+      });
+  },
   getBasicData: function () {
     return new Promise((resolve) => {
       db.collection("basicData")
@@ -92,7 +94,10 @@ var cloud = {
           localData.putTasks(tasks);
           resolve(1);
         })
-        .catch(reject);
+        .catch((err) => {
+          interface.printAlert("Error", `Unexpected Error Occurred ${err}`);
+          console.log(`Unexpected Error Occurred ${err}`);
+        });
     });
   },
 
@@ -143,6 +148,9 @@ var cloud = {
     let basicData = await this.getBasicData();
     return new Promise((resolve) => {
       resolve(basicData.channels);
+    }).catch((err) => {
+      interface.printAlert("Error", `Unexpected Error Occurred ${err}`);
+      console.log(`Unexpected Error Occurred ${err}`);
     });
   },
 
