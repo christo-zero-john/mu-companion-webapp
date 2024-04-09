@@ -1,5 +1,4 @@
 # [mu companion](https://mu-companion.netlify.app/)
 
-A new month, a new project. This time I'm doing a project for the mulearn community (on my own accord of course). Take a guess on what this project could be !! Well, I named it "MU COMPANION", coz it's gonna be your best companion app with mulearn. So start guessing. Till next time 😉
-
+Ever wondered how it would be like if there is a todo list app just for you to manage all your mulearn things!! Thats just what mu-companion is. Welcome to the new world of companion, where mulearning is made fun and easy. Let's go explore mu-companion. And by the way this is just the beginning, there is more to come. 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/69dbb086-f25e-4f36-8ffe-4467d6985e0e/deploy-status)](https://app.netlify.com/sites/mu-companion/deploys)
