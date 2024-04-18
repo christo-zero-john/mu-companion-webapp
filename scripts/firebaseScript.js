@@ -24,6 +24,7 @@ var cloud = {
         console.log("Error", err);
       });
   },
+
   getBasicData: function () {
     return new Promise((resolve) => {
       db.collection("basicData")
@@ -33,6 +34,11 @@ var cloud = {
             data = doc.data();
           });
           resolve(data);
+        })
+        .catch((err) => {
+          interface.printAlert(
+            "Network disconnected or some other error occurred! Check ypur network connection and try again later. If the error persists contact support."
+          );
         });
     });
   },
@@ -75,7 +81,10 @@ var cloud = {
           console.log("Data Written succesfully");
         })
         .catch((err) => {
-          interface.printAlert(err);
+          interface.printAlert(
+            "Cannot Update Task! Check your network connection and try again later."
+          );
+          console.log("Error", err);
         });
       resolve(1);
     });
@@ -88,14 +97,22 @@ var cloud = {
       db.collection("tasks")
         .get()
         .then((snapshot) => {
+          console.log("Got snapshot", snapshot);
           snapshot.forEach((doc) => {
             tasks.push(doc.data());
           });
-          localData.putTasks(tasks);
+          console.log(tasks);
+          if (tasks.length > 0) {
+            localData.putTasks(tasks);
+          } else {
+            interface.printAlert(
+              "Fetch latest Tasks Failed. Trying to initialize with old Task Data..."
+            );
+          }
           resolve(1);
         })
         .catch((err) => {
-          interface.printAlert("Error", `Unexpected Error Occurred ${err}`);
+          interface.printAlert(`Unexpected Error Occurred ${err}`);
           console.log(`Unexpected Error Occurred ${err}`);
         });
     });
@@ -124,6 +141,11 @@ var cloud = {
           console.log("Task updated and saved to DB");
           this.getAllTasksFromDB();
           resolve(1);
+        })
+        .catch((err) => {
+          interface.printAlert(
+            "Some error occured while saving Task! Check your network connection and try again. If the error persists contact support."
+          );
         });
     });
   },
