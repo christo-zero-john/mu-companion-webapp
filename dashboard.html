@@ -8,7 +8,11 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <link rel="shortcut icon" href="/assets/img/favicon.svg" type="image/x-icon">
+    <link
+      rel="shortcut icon"
+      href="/assets/img/favicon.svg"
+      type="image/x-icon"
+    />
 
     <!-- Bootstrap CSS v5.2.1 -->
     <link
@@ -19,119 +23,152 @@
     />
 
     <!-- my css -->
-    <link rel="stylesheet" href="/styles/dashboard.css" />
     <link rel="stylesheet" href="/defaults.css" />
   </head>
 
-  <body class="mb-5 bg-dark text-light no-scrollbar">
-    <!-- nav bar -->
-    <div class="navDiv bg-violet">
-      <nav class="navbar navbar-dark bg-dark navbar-expand">
-        <div class="container-fluid">
-          <a class="navbar-brand" >MU-companion</a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-              <li class="nav-item">
-                <a
-                  class="navbar-brand"
-                  aria-current="page"
-                  href="/getting-started.html"
-                  >Get Started</a
-                >
-              </li>
-              <!-- <li class="nav-item">
-                <a class="nav-link" href="#">Open Source</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Collaborate</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" aria-disabled="true">Support Center</a>
-              </li> -->
-            </ul>
+  <body class="bg-dark text-light no-scrollbar">
+    <header class="">
+      <nav class="">
+        <a
+          data-bs-toggle="offcanvas"
+          href="#menuBar"
+          role="button"
+          aria-controls="menuBar"
+        >
+          <img src="assets/img/nav-icon.svg" alt="" class="navIcon" />
+        </a>
+        <h1 class="title">mu-companion</h1>
+
+        <div
+          class="offcanvas offcanvas-start bg-dark text-light col-md-9"
+          tabindex="-1"
+          id="menuBar"
+          aria-labelledby="menuBar"
+        >
+          <div class="offcanvas-header p-2">
+            <h5 class="offcanvas-title" id="menuBar">MENU</h5>
+            <button class="btn" data-bs-dismiss="offcanvas" aria-label="Close">
+              <img
+                src="/assets/img/close-button.svg"
+                alt=""
+                class="close-btn"
+              />
+            </button>
           </div>
+
+          <!-- MENU ITEMS -->
+          <div class="offcanvas-body no-scrollbar" id="menu-items">
+            <!-- <p class="normal-link">Settings</p>
+            <p class="normal-link">Get Started</p> -->
+            <p class="normal-link" onclick="interface.printAllTasks()">
+              All Mulearn Tasks
+            </p>
+            <p class="normal-link" onclick="interface.findTask()">Find Tasks</p>
+            <p class="normal-link" onclick="interface.printTrackedTasks()">
+              Your tasks
+            </p>
+            <p class="normal-link" onclick="interface.printRemovedTracks()">
+              Removed tasks
+            </p>
+            <p class="normal-link" onclick="interface.printCompletedTasks()">
+              Completed tasks
+            </p>
+            <!-- <p class="normal-link">Admin Dashboard</p>
+            <p class="normal-link">Contribute</p>
+            <p class="normal-link">Support Center</p>
+            <p class="normal-link">About</p> -->
+            <a
+              href="https://github.com/christo-zero-john/mu-companion-webapp/stargazers"
+              class="link-aqua"
+            >
+              <div
+                class="github d-flex flex-row justify-content-center m-0 pb-0"
+              >
+                <p class="">Star on Github</p>
+                <img src="/assets/img/github.svg" alt="" class="" /></div
+            ></a>
+          </div>
+          <!-- MENU ITEMS UP -->
         </div>
       </nav>
-    </div>
 
-    <!-- User Dashboard profile section -->
-    <header class="dashboard py-3" id="dashboard">
-      <div class="userProfile">
-        <!-- currently inactive will be active after integrating cloud sync -->
-        <img
-          src="/assets/img/profilePic.png"
-          alt=""
-          class="profilePic d-block mx-auto"
-        />
-        <p class="userId fw-100" id="userId">ID: ${userData.userId}</p>
-        <div class="nameGroup">
-          <h2 class="name" id="name">${userData.name}</h2>
-          <p class="username" id="username">@${userData.userName}</p>
-        </div>
-      </div>
-
-      <hr class="profileHr" />
+      <!-- Dashboard div -->
+      <div
+        id="dashboard"
+        class="d-flex flex-row justify-content-around align-items-center"
+      ></div>
     </header>
 
-    <!-- dashboard buttons section -->
-    <main class="" id="dashBoardItems">
-      <button
-        class="btn col-12 col-md-4 mx-md-5 dashboard-button"
-        type="button"
-        onclick="interface.printAllTasks()"
-      >
-        All mulearn Tasks
-      </button>
-
-      <button
-        class="btn col-12 col-md-4 mx-md-5 dashboard-button"
-        type="button"
-        onclick="interface.showSearchDiv()"
-      >
-        Find Task
-      </button>
-      <button
-        class="btn col-12 col-md-4 mx-md-5 dashboard-button"
-        type="button"
-        onclick="interface.printTrackedTasks()"
-      >
-        Your Tasks List
-      </button>
-
-      <button
-        class="btn col-12 col-md-4 mx-md-5 dashboard-button"
-        type="button"
-        onclick="interface.printRemovedTracks()"
-      >
-        Removed Tasks
-      </button>
-
-      <button
-        class="btn col-12 col-md-4 mx-md-5 dashboard-button"
-        type="button"
-        onclick="interface.printCompletedTasks()"
-      >
-        Completed Tasks
-      </button>
+    <main class="dashboard-tasks mt-5">
+      <h2 class="fs-4 fw-100 mx-3">Your Tasks</h2>
+      <div class="fw-100 no-scrollbar ms-5 me-1 my-3" id="dashboardTasks">
+        <p class="">Track some tasks to view them here.</p>
+        <p class="fw-300">
+          Click on
+          <img
+            src="/assets/img/all-tasks-icon.svg"
+            alt="All tasks icon"
+            class="logo-in-article"
+          />
+          to view all taks or Search for tasks
+          <img
+            src="/assets/img/find-task-icon.svg"
+            alt="All tasks icon"
+            class="logo-in-article"
+          />
+        </p>
+      </div>
     </main>
 
-    <footer class="footer bg-secondary w-100 text-center pb-2 fixed-bottom">
-      <p class="openweb bg-dark 0 p-0 m-0 op-09 p-2 small fw-100">
-        Powered By <span class="">open</span
-        ><span class="">web</span>.developers
-      </p>
+    <!-- Menu Icons -->
+    <footer
+      class="sticky-bottom menu d-flex flex-row justify-content-around align-items-center p-2"
+    >
+      <!-- View all tasks -->
+      <img
+        onclick="interface.printAllTasks()"
+        src="/assets/img/all-tasks-icon.svg"
+        alt=""
+        class="menu-icon"
+      />
+
+      <!-- Find tasks -->
+      <img
+        onclick="interface.findTask()"
+        src="/assets/img/find-task-icon.svg"
+        alt=""
+        class="menu-icon"
+      />
+
+      <!-- View Tracked Tasks -->
+      <img
+        onclick="interface.printTrackedTasks()"
+        src="/assets/img/tracked-task-icon.svg"
+        alt=""
+        class="menu-icon"
+      />
+
+      <!-- View completed Tasks -->
+      <img
+        onclick="interface.printCompletedTasks()"
+        src="/assets/img/completed-task-icon.svg"
+        alt=""
+        class="menu-icon"
+      />
+
+      <!-- Goto Github repository -->
+      <a
+        href="https://github.com/christo-zero-john/mu-companion-webapp"
+        class=""
+      >
+        <img
+          src="/assets/img/github.svg"
+          alt="Goto Github repository"
+          class="menu-icon"
+        />
+      </a>
     </footer>
+
 
     <!-- Bootstrap JavaScript Libraries -->
     <script
@@ -151,18 +188,15 @@
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
       crossorigin="anonymous"
     ></script>
-    <!-- app script -->
+
     <!-- firebase scripts -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
 
-    <!-- app  script -->
+    <!-- app script -->
     <script src="/scripts/firebaseConfig.js"></script>
     <script src="/scripts/firebaseScript.js"></script>
     <script src="/scripts/app.js"></script>
     <link rel="stylesheet" href="/styles/app.css" />
-
-    <!-- my js -->
-    <script src="/scripts/dashboard.js"></script>
   </body>
 </html>
