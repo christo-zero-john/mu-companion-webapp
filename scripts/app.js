@@ -130,7 +130,7 @@ var userData = {
   removedTracks: [],
   trackedTasks: [],
   completedTasks: [],
-  roles: ["superAdmin", "admin", "moderator", "user"],
+  roles: ["moderator", "user"],
   totalKarma: 0,
 };
 
@@ -451,7 +451,7 @@ var appFunctions = {
     }
     interface.clearDataDiv();
     for (x in searchResults) {
-      interface.printTask(searchResults[x]);
+      interface.printTask(searchResults[x], "all");
     }
   },
 };
@@ -470,7 +470,7 @@ var interface = {
       data = JSON.stringify(data);
       console.log(data);
       menuItems.innerHTML += `
-        <p class="" onclick='interface.adminDashboard(${data})'>Admin Dashboard</p>
+        <p class="normal-link" onclick='interface.adminDashboard(${data})'>Admin Dashboard</p>
       `;
     }
     dashboard.innerHTML = `
@@ -498,6 +498,7 @@ var interface = {
         }</p>`;
       }
     }
+    interface.hideLoading();
   },
   adminDashboard: function (data) {
     console.log(data.lastTaskId);
@@ -552,13 +553,21 @@ var interface = {
     document.body.appendChild(div);
     dataWrapper = document.getElementById("data-wrapper");
     dataWrapper.innerHTML = `
-    <div class="header sticky-top bg-dark w-100 d-flex flex-row justify-content-between p-3 py-2">
-      <p class="fs-3 fw-100 d-inline"   id="data-header">mu-companion</p>
-      <img src="/assets/img/close-button.svg" alt="close button" class="menu-icon" onclick="interface.hideDataWrapper()">
+    <div class="header sticky-top bg-dark w-100 p-3 py-2">
+      <div class="d-flex flex-row justify-content-between">
+        <p class="fs-3 fw-100 d-inline" id="data-header">mu-companion</p>
+
+        <img
+          src="/assets/img/close-button.svg"
+          alt="close button"
+          class="menu-icon"
+          onclick="interface.hideDataWrapper()"
+        />
+      </div>            
+      <input type="text" id="search-box" placeholder="Search Something">
     </div>
 
-  <div id="data-div"> 
-    <input type="text" id="search-box" placeholder="Search Something">    
+  <div id="data-div">     
   </div>
     `;
     dataDiv = document.getElementById("data-div");
@@ -970,6 +979,12 @@ var interface = {
     searchBox.style.display = "block";
     interface.printAllTasks();
     interface.showDataWrapper("Find Tasks");
+  },
+  showLoading: function () {
+    document.getElementById("loading-div").style.display = "block";
+  },
+  hideLoading: function () {
+    document.getElementById("loading-div").style.display = "none";
   },
   localUserSetUp: function () {
     dataDiv.innerHTML = `
