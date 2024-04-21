@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2024 Christo John
+Copyright (c) 2024 [Christo John](https://github.com/christo-zero-john)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -11,6 +11,11 @@ furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
+
+Must attribute the [author](https://github.com/christo-zero-john) and this [repository](https://github.com/christo-zero-john/mu-companion-webapp) in all the
+copies or substantial portions of the Software as 
+> This product is a modified version of [mu-companion](https://github.com/christo-zero-john/mu-companion-webapp) webapp developed by [Christo John](https://github.com/christo-zero-john).
+
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,

@@ -1,25 +1,23 @@
-// initalising tooltips
-const tooltipTriggerList = document.querySelectorAll(
-  '[data-bs-toggle="tooltip"]'
-);
-const tooltipList = [...tooltipTriggerList].map(
-  (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
-);
-
+// Bootstrap Initialisations
+// 1. ALert Toast Initialisation
+function showAlert() {
+  let toast = new bootstrap.Toast(document.getElementById("liveToast"));
+  toast.show();
+}
 // Global variables
 var condition = false,
   temp,
-  dataDivContainer,
+  dataWrapper,
+  dataHeader,
   dataDiv,
-  searchDiv,
   searchBox,
   modalDiv,
   modalTitle,
   modalBody,
   modalBtn,
   modalCloseBtn,
-  alertDiv,
-  searchDiv,
+  toastBody,
+  searchBox,
   searchBox,
   getName,
   getHashtag,
@@ -132,7 +130,7 @@ var userData = {
   removedTracks: [],
   trackedTasks: [],
   completedTasks: [],
-  roles: ["superAdmin", "moderator", "user"],
+  roles: ["moderator", "user"],
   totalKarma: 0,
 };
 
@@ -442,7 +440,7 @@ var appFunctions = {
     }
   },
   searchTask: function (searchTerm) {
-    console.log(searchTerm);
+    // console.log(searchTerm);
     let searchResults = [];
     let tasks = localData.getTasks();
     for (x in tasks) {
@@ -453,12 +451,96 @@ var appFunctions = {
     }
     interface.clearDataDiv();
     for (x in searchResults) {
-      interface.printTask(searchResults[x]);
+      interface.printTask(searchResults[x], "all");
     }
   },
 };
 
 var interface = {
+  setDashboard: async function () {
+    let dashboard = document.getElementById("dashboard");
+    let dashboardTasks = document.getElementById("dashboardTasks");
+    let menuItems = document.getElementById("menu-items");
+    if (userData.roles.includes("admin")) {
+      let data = await cloud.getBasicData();
+      data = {
+        localUserCount: data.localUserCount,
+        registeredUserCount: data.registeredUserCount,
+      };
+      data = JSON.stringify(data);
+      console.log(data);
+      menuItems.innerHTML += `
+        <p class="normal-link" onclick='interface.adminDashboard(${data})'>Admin Dashboard</p>
+      `;
+    }
+    dashboard.innerHTML = `
+    <div>
+      <img src="/assets/img/tracked-task-icon.svg" alt="" class="dashboard-icon">
+      <p class="dashboard-score">${userData.trackedTasks.length}</p>
+    </div>
+
+    <div>
+      <img src="/assets/img/completed-task-icon.svg" alt="" class="dashboard-icon">
+      <p class="dashboard-score">${userData.completedTasks.length}</p>
+    </div>
+
+    <div>
+      <img src="/assets/img/karma-points-icon.svg" alt="" class="dashboard-icon">
+      <p class="dashboard-score">${userData.totalKarma}</p>
+    </div>
+  `;
+    if (userData.trackedTasks.length > 0) {
+      dashboardTasks.innerHTML = "";
+      for (x in userData.trackedTasks) {
+        dashboardTasks.innerHTML += `
+        <p class="">${
+          appFunctions.getTaskById(userData.trackedTasks[x]).name
+        }</p>`;
+      }
+    }
+    interface.hideLoading();
+  },
+  adminDashboard: function (data) {
+    console.log(data.lastTaskId);
+    this.showDataWrapper("Admin Dashboard");
+    dataDiv.innerHTML = `
+      <div
+        class="admin-dashboard d-flex flex-row justify-content-around align-items-center"
+      >
+        <div class="">
+          <img
+            src="/assets/img/registered-users-icon.svg"
+            alt="Registered Users"
+            class="dashboard-icon"
+          />
+          <p class="dashboard-score">${data.registeredUserCount}</p>
+        </div>
+
+        <div class="">
+          <img
+            src="/assets/img/total-users-icon.svg"
+            alt="Local users"
+            class="dashboard-icon"
+          />
+          <p class="dashboard-score">${data.localUserCount}</p>
+        </div>
+      </div>
+
+      <div class="admin-dashboard-menu">
+        <p class="link normal-link" onclick="interface.addTaskForm()">
+          Add mulearn Discord task
+        </p>
+        <!-- <p
+          class="link normal-link"
+          onclick=""
+        >
+          Delete mulearn Discord task
+        </p> -->
+        <p class="link normal-link" onclick="interface.addChannelForm()">Add Channel</p>
+        <p class="link normal-link" onclick="interface.printChannels()">Show All Channel</p>
+      </div>
+    `;
+  },
   initializeDivs: function () {
     this.createDataDiv();
     this.createAlertDiv();
@@ -466,27 +548,35 @@ var interface = {
   },
   createDataDiv: function () {
     let div = document.createElement("div");
-    div.id = "dataDivContainer";
+    div.id = "data-wrapper";
+    div.classList = "bg-dark no-scrollbar";
     document.body.appendChild(div);
-    dataDivContainer = document.getElementById("dataDivContainer");
-    dataDivContainer.innerHTML = `
-      <div class="header">
-        <button class="close" onclick="interface.hideDataDivContainer()">Go Back</button>
-      </div>
-      <div class="" id="searchDiv">
-        <div class="search">
-          <input type="text" id="searchBox" placeholder="Search Something" />
-        </div>
-      </div>
-      <div class="" id="dataDiv"></div>
+    dataWrapper = document.getElementById("data-wrapper");
+    dataWrapper.innerHTML = `
+    <div class="header sticky-top bg-dark w-100 p-3 py-2">
+      <div class="d-flex flex-row justify-content-between">
+        <p class="fs-3 fw-100 d-inline" id="data-header">mu-companion</p>
+
+        <img
+          src="/assets/img/close-button.svg"
+          alt="close button"
+          class="menu-icon"
+          onclick="interface.hideDataWrapper()"
+        />
+      </div>            
+      <input type="text" id="search-box" placeholder="Search Something">
+    </div>
+
+  <div id="data-div">     
+  </div>
     `;
-    dataDiv = document.getElementById("dataDiv");
-    searchDiv = document.getElementById("searchDiv");
-    searchBox = document.getElementById("searchBox");
+    dataDiv = document.getElementById("data-div");
+    dataHeader = document.getElementById("data-header");
+    searchBox = document.getElementById("search-box");
     searchBox.addEventListener("input", function () {
       appFunctions.searchTask(searchBox.value);
     });
-    interface.hideDataDivContainer();
+    interface.hideDataWrapper();
   },
   createModalDiv: function () {
     let div = document.createElement("div");
@@ -527,10 +617,31 @@ var interface = {
     modalCloseBtn = document.getElementById("closeModal");
   },
   createAlertDiv: function () {
-    let div = document.createElement("div");
-    div.id = "alertDiv";
-    document.body.appendChild(div);
-    alertDiv = document.getElementById("alertDiv");
+    let alertToast = `
+      <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div
+          id="liveToast"
+          class="toast bg-dark text-info fw-100 border border-info"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="toast-header bg-dark text-warning fw-100 border border-info">
+            
+            <strong class="me-auto">Message</strong>
+            <button
+              type="button"
+              class="btn bg-secondary btn-close"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="p-2 text-light" id="toast-body">Hey, This is an alert</div>
+        </div>
+      </div>
+    `;
+    document.write(alertToast);
+    toastBody = document.getElementById("toast-body");
   },
   confirmActionModal: function (title, message) {
     confirmAction = new Promise((resolve) => {
@@ -550,21 +661,20 @@ var interface = {
     });
     return confirmAction;
   },
-  showDataDivContainer: function () {
-    dataDivContainer.style.display = "block";
+  showDataWrapper: function (title) {
+    dataWrapper.style.display = "block";
+    if (title) {
+      dataHeader.innerHTML = title;
+    }
   },
-  hideDataDivContainer: function () {
-    dataDivContainer.style.display = "none";
-    this.hideSearchDiv();
+  hideDataWrapper: function () {
+    dataWrapper.style.display = "none";
+    this.hidesearchBox();
   },
   printAlert: async function (message) {
-    alertDiv.style.display = "block";
-    alertDiv.innerHTML = `
-    <button type="button" class="" id="closeAlert" onclick="interface.hideAlert()">Close</button>
-    <p class="alertMessage">${message}</p>
-  `;
-    await delay(4000);
-    interface.hideAlert();
+    toastBody.innerHTML = message;
+    let toast = new bootstrap.Toast(document.getElementById("liveToast"));
+    toast.show();
   },
   hideAlert: function () {
     alertDiv.innerHTML = "";
@@ -574,7 +684,7 @@ var interface = {
     dataDiv.innerHTML = "";
   },
   addChannelForm: function () {
-    this.showDataDivContainer();
+    this.showDataWrapper("Add Channel");
     dataDiv.innerHTML = `
       <div class="addChannelForm">
         <input type="text" placeholder="Channel Name" id="channelName"/>
@@ -608,10 +718,10 @@ var interface = {
     }
     content += `</div>`;
     dataDiv.innerHTML = content;
-    this.showDataDivContainer();
+    this.showDataWrapper("All Available Channels");
   },
   taskForm: async function () {
-    interface.showDataDivContainer();
+    interface.showDataWrapper("Add Discord Task");
     let data = await cloud.getBasicData();
     interestGroups = data.interestGroups;
     let igOptions = `<option class="" value="">Select Interest Group</option>`;
@@ -667,8 +777,7 @@ var interface = {
     });
   },
   printTask: function (task, type) {
-    interface.showDataDivContainer();
-    let additionalData = `<div id="additionalData">`;
+    let buttons = `<div class="buttons" id="buttons" onclick="">`;
     userData = localData.getUserData();
     switch (type) {
       case "all": {
@@ -676,88 +785,129 @@ var interface = {
           userData.trackedTasks.includes(task.id) &&
           !userData.completedTasks.includes(task.id)
         ) {
-          additionalData += `
-            <button type="button" class="remove" onclick="appFunctions.removeTrackedTask('${task.id}','all')">
-              <img src="/assets/img/taskTrackedIcon.png" alt="" class="taskTrackedIcon">
+          buttons += `
+            <button
+              class="btn"
+              onclick="appFunctions.removeTrackedTask('${task.id}','all')"
+            >
+              <img src="/assets/img/tracked-task-icon.svg" alt="remove task" class="" />
             </button>
           `;
         } else if (userData.completedTasks.includes(task.id)) {
-          additionalData += `
-            <button type="button" class="completed" onclick="interface.printAlert('Task is already completed, you can view it in the complted tasks list')">    
-              <img src="/assets/img/taskCompletedIcon.png" alt="" class="taskCompletedIcon">
+          buttons += `
+            <button
+              class="btn"
+              onclick="interface.printAlert('Task is already completed, you can view it in the complted tasks list')"
+            >
+              <img src="/assets/img/completed-task-icon.svg" alt="completed task" class="" />
             </button>
           `;
         } else {
-          additionalData += `
-            <button type="button" class="track" onclick="appFunctions.trackTask('${task.id}','all')"> 
-              <img src="/assets/img/trackTaskIcon.png" alt="" class="trackTaskIcon">
+          buttons += `
+            <button
+              class="btn"
+              onclick="appFunctions.trackTask('${task.id}','all')"
+            >
+              <img src="/assets/img/track-task-icon.svg" alt="track this task" class="" />
             </button>
           `;
         }
         break;
       }
       case "tracked": {
-        additionalData += `             
-            <div id="additionalData">
-                <button type="button" class="remove" onclick="appFunctions.removeTrackedTask('${task.id}','tracked')">
-                  <img src="/assets/img/deleteIcon.png" alt="" class="deleteIcon">
-                </button>
+        buttons += `             
+          <button
+            class="btn"
+            onclick="appFunctions.removeTrackedTask('${task.id}','tracked')"
+          >
+            <img src="/assets/img/delete-icon.svg" alt="Remove Task" class="" />
+          </button>
 
-                <button type="button" class="markAsCompleted" onclick="appFunctions.markAsCompleted('${task.id}')">    
-                  <img src="/assets/img/markAsCompletedIcon.png" alt="" class="markAsCompleteIcon">
-                </button>
+          <button
+            class="btn"
+            onclick="appFunctions.markAsCompleted('${task.id}')"
+          >
+            <img
+              src="/assets/img/mark-task-completed-icon.svg"
+              alt="Mark this task as completed"
+              class=""
+            />
+          </button>
         `;
         break;
       }
       case "removedTracks": {
-        additionalData += `
-              <button type="button" class="track" onclick="appFunctions.trackTask('${task.id}','removed')">
-                <img src="/assets/img/trackTaskIcon.png" alt="" class="trackTaskIcon">
-              </button>
+        buttons += `
+          <button
+            class="btn"
+            onclick="appFunctions.trackTask('${task.id}','removed')"
+          >
+            <img
+              src="/assets/img/track-task-icon.svg"
+              alt="Track Task"
+              class=""
+            />
+          </button>
         `;
         break;
       }
       case "delete": {
         if (userData.roles.includes("admin")) {
-          additionalData += `      
-            <button type="button" class="delete" onclick="appFunctions.deleteTask('${task.id}')">    
-              <img src="/assets/img/deleteIcon.png" alt="" class="deleteIcon">
+          buttons += `      
+            <button class="btn" onclick="appFunctions.deleteTask('${task.id}')">
+              <img src="/assets/img/delete-icon.svg" alt="Remove Task" class="" />
             </button>
           `;
         }
       }
     }
-    additionalData += `</div>`;
+    buttons += `</div>`;
     dataDiv.innerHTML += `
-        <div class="task-item col-11 col-md-5 mx-auto">
-        <div  onclick="interface.viewTaskItem('${task.id}')">
-          <p class="title">${task.name}</p>
-          <p class="ig small">${task.ig}</p>
-          <p class="karma">${task.karma}</p>
-          <p class="hashtag small">${task.hashtag}</p>
-          <p class="totalPeopleCurrentlyTracking">
-          <img src="/assets/img/taskTrackedIcon.png" alt="" class="taskTrackedIcon">
-            <span class="txt">${task.totalPeopleCurrentlyTracking}</span>         
-          </p>
-          <p class="totalPeopleCompleted">
-            <img src="/assets/img/taskCompletedIcon.png" alt="" class="taskTrackedIcon">
-            <span class="txt">${task.totalPeopleCompleted}</span>   
-          </p>   
-        </div>             
-        ${additionalData}
-        </div>       
+      <div class="task-item-wrap col-12 col-md-5 mb-1 m-md-2 mx-auto p-2">
+        <div class="task-item" onclick="interface.viewTask('${task.id}')">
+          <div class="">
+            <p class="name">${task.name}</p>
+            <p class="ig">${task.ig}</p>
+          </div>
+          <p class="hashtag">${task.hashtag}</p>
+
+          <div class="total-trackings">
+            <img
+              src="/assets/img/tracked-task-icon.svg"
+              alt=""
+              class="task-stat-img"
+            />
+            <p class="task-stat-text">${task.totalPeopleCurrentlyTracking}</p>
+          </div>
+
+          <div class="total-completions">
+            <img
+              src="/assets/img/completed-task-icon.svg"
+              alt=""
+              class="task-stat-img"
+            />
+            <p class="task-stat-text">${task.totalPeopleCompleted}</p>
+          </div>
+
+          <p class="karma-points">${task.karma}</p>  
+        </div>     
+        ${buttons}
+      </div>       
       `;
   },
-  viewTaskItem: function (id) {
-    console.log(`Printing item ${id}`);
+  viewTask: function (id) {
+    console.log(`Viewing Task ${id}`);
   },
   printAllTasks: function () {
     interface.clearDataDiv();
+    interface.showDataWrapper("All mulearn Tasks");
     var tasks = localData.getTasks(tasks);
     //console.log("All tasks | ", tasks);
     if (tasks.length == 0) {
-      this.printAlert(`No tasks Available`);
-      //console.log("No tasks Available");
+      this.printAlert(
+        `Fetch Tasks : Failed! Check your internet connection and try again.`
+      );
+      cloud.getAllTasksFromDB();
     } else {
       for (x in tasks) {
         interface.printTask(tasks[x], "all");
@@ -766,6 +916,7 @@ var interface = {
   },
   printTrackedTasks: function () {
     interface.clearDataDiv();
+    interface.showDataWrapper("Your Tasks");
     let trackedTasks = localData.getUserData().trackedTasks;
 
     if (trackedTasks.length == 0) {
@@ -781,6 +932,7 @@ var interface = {
   },
   printRemovedTracks: function () {
     interface.clearDataDiv();
+    interface.showDataWrapper("Removed Tasks");
     let userData = localData.getUserData();
     if (userData.removedTracks.length == 0) {
       this.printAlert(`You don't have any removed trackings`);
@@ -795,6 +947,7 @@ var interface = {
   },
   printCompletedTasks: function () {
     interface.clearDataDiv();
+    interface.showDataWrapper("Completed Tasks");
     let userData = localData.getUserData();
     if (userData.completedTasks.length <= 0) {
       this.printAlert("You dont have any completed tasks");
@@ -808,6 +961,7 @@ var interface = {
   },
   deleteTasks: function () {
     interface.clearDataDiv();
+    interface.showDataWrapper("Delete Tasks");
     let tasks = localData.getTasks();
     if (tasks.length <= 0) {
       interface.printAlert(
@@ -818,13 +972,19 @@ var interface = {
       this.printTask(tasks[x], "delete");
     }
   },
-  hideSearchDiv: function (searchTerm) {
-    searchDiv.style.display = "none";
+  hidesearchBox: function () {
+    searchBox.style.display = "none";
   },
-  showSearchDiv: function (searchTerm) {
-    searchDiv.style.display = "block";
+  findTask: function () {
+    searchBox.style.display = "block";
     interface.printAllTasks();
-    this.showDataDivContainer();
+    interface.showDataWrapper("Find Tasks");
+  },
+  showLoading: function () {
+    document.getElementById("loading-div").style.display = "block";
+  },
+  hideLoading: function () {
+    document.getElementById("loading-div").style.display = "none";
   },
   localUserSetUp: function () {
     dataDiv.innerHTML = `
@@ -835,7 +995,7 @@ var interface = {
         <button class="btn btn-outline-success px-5 py-1 m-3 d-block d-md-inline mx-auto mx-md-4" onclick="">Sign Up</button>
       </div>
     `;
-    this.showDataDivContainer();
+    this.showDataWrapper();
   },
 };
 
@@ -847,6 +1007,7 @@ async function main() {
   await initializeFirebase();
   interface.initializeDivs();
   localData.initializeLocalStorage();
+  interface.setDashboard();
 }
 
 // console.log(localData.getUserData());
