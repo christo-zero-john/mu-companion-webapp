@@ -1,10 +1,6 @@
 # <p align="center">[mu companion](https://mu-companion.vercel.app/)</p>
 
-<div style="display:flex; flex-direction:row; justify-content: space-between; align-items: center;">
-    <p style="background-color:silver; color: black; padding: 0 10px; border-radius: 5px;">v1.0.5</p>
-    `
-    <a href="https://mu-companion.vercel.app/" style="background-color: #ff7231; color: black; border-radius: 5px; padding:0 10px;">View Live</a>
-</div>
+`v1.0.5`
 
 
 <p align="center">
@@ -12,7 +8,7 @@
 </P>
 
 <p>
-    <span style="color:orange; font-size:20px">Welcome to mu-companion!</span>  This project is a task-centric web application designed to streamline the learning experience within the <a href="https://www.mulearn.org">mulearn community</a>.
+    Welcome to mu-companion! This project is a task-centric web application designed to streamline the learning experience within the <a href="https://www.mulearn.org">mulearn community</a>.
 </p>
 
 mu-companion serves as a centralized hub where Mulearn members can effortlessly manage and track their tasks within various interest groups. By integrating Mulearn's extensive task library directly into our platform, users gain convenient access to all the available tasks from mulearn discord server.
@@ -88,11 +84,3 @@ Read our [liscensing agreement](./LICENSE) before forking this repository.
     </a>
 </p>
 
-<p>Sample text high</p>
-
-<style>
-
-    .sample{
-        color:red;
-    }
-</style>
