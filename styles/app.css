@@ -9,6 +9,28 @@ body {
   position: relative;
 }
 
+.icons {
+  width: 30px;
+}
+
+td {
+  font-size: 18px;
+  font-weight: 100;
+  padding: 10px;
+}
+
+#walkthrough ul{
+  list-style: none;
+}
+
+.appIcon {
+  height: 30px;
+}
+
+code{
+  font-size: 16px;
+}
+
 #loading-div {
   position: fixed;
   padding: 0;
@@ -50,6 +72,20 @@ nav {
 
 .navIcon {
   width: 40px;
+}
+
+.guide-btn{
+  border: 0;
+  background-color: #5f9d01;
+  padding: 2px 30px;
+  border-radius: 5px;
+  float: right;
+  margin:0 10px;
+  padding-left: 0;
+}
+
+.guide-btn img{
+  height: 30px;
 }
 
 .title {
@@ -229,6 +265,10 @@ nav {
   height: 20px;
 }
 
+.task-item desc {
+  text-align: left !important;
+}
+
 #data-wrapper {
   position: fixed;
   text-align: center;
@@ -319,6 +359,13 @@ form button:disabled {
 .normal-link:hover {
   color: #ffb731;
   font-size: 18px;
+}
+
+.task-expand-btn {
+  background-color: #2c5c53;
+  margin: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 
 @keyframes loads {
