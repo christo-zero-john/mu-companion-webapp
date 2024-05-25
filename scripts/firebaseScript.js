@@ -158,7 +158,7 @@ var cloud = {
   updateTaskInDB: async function (task) {
     return new Promise((resolve) => {
       db.collection("tasks")
-        .doc(task.id)
+        .doc(task.hashtag)
         .set(task)
         .then(() => {
           console.log("Task updated and saved to DB");
@@ -213,3 +213,28 @@ var cloud = {
       });
   },
 };
+
+/* trasnferData function
+async function transferData() {
+  let dbTasks = new Array();
+  await db
+    .collection("tempTasks")
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        dbTasks.push(doc.data());
+      });
+    });
+  for (x in dbTasks) {
+    await db
+      .collection("tasks")
+      .doc(`${dbTasks[x].hashtag}`)
+      .set(dbTasks[x])
+      .then(() => {
+        console.log(
+          `Data written successfully with hash ${dbTasks[x].hashtag}`
+        );
+      });
+  }
+}
+*/
