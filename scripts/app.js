@@ -141,6 +141,13 @@ var appFunctions = {
       task.level = 6;
     } else if (task.taskChannel.includes("lvl7")) {
       task.level = 7;
+    } else if (task.taskChannel.includes("info")) {
+      let cname = task.taskChannel;
+      cname = cname.split("-");
+      task.level = cname[1];
+      console.log("task level ", task.level);
+    } else {
+      task.level = 0;
     }
     await appFunctions.generateTaskId().then((res) => {
       task.id = res;
@@ -244,11 +251,8 @@ var appFunctions = {
       } else {
         userData.trackedTasks.push(id);
         let task = appFunctions.getTaskById(id);
-        task.totalPeopleTracked++;
         task.totalPeopleCurrentlyTracking++;
-        cloud.updateTaskInDB(task);
-        await cloud.getAllTasksFromDB();
-        userData.totalTracking++;
+        await cloud.updateTaskInDB(task);
       }
       if (appFunctions.validateTracking(userData.removedTracks, id)) {
         userData.removedTracks.splice(userData.removedTracks.indexOf(id), 1);
@@ -288,7 +292,6 @@ var appFunctions = {
         if (task.id == id) {
           //console.log("Task Found");
           userData.trackedTasks.splice(userData.trackedTasks.indexOf(id), 1);
-          userData.totalTracking--;
           userData.removedTracks.push(id);
           localData.putUserData(userData);
           interface.printAlert(
@@ -432,7 +435,6 @@ var interface = {
   },
   printBulkTask: function () {},
   adminDashboard: function (data) {
-    console.log(data.lastTaskId);
     this.showDataWrapper("Admin Dashboard");
     dataDiv.innerHTML = `
       <div
@@ -661,12 +663,9 @@ var interface = {
   clearTaskForm: function () {
     getName.value = "";
     getHashtag.value = "";
-    getIg.value = "";
     getDescription.value = "";
     getTaskLink.value = "";
     getKarma.value = "";
-    getTaskChannel.value = "";
-    getSubmissionChannel.value = "";
   },
   showTaskForm: function () {
     taskForm.style.display = "block";
