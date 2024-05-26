@@ -214,7 +214,7 @@ var cloud = {
   },
 };
 
-/* trasnferData function
+/* trasnferData function*/
 async function transferData() {
   let dbTasks = new Array();
   await db
@@ -222,7 +222,9 @@ async function transferData() {
     .get()
     .then((snapshot) => {
       snapshot.forEach((doc) => {
-        dbTasks.push(doc.data());
+        let task = doc.data();
+        task.id = task.hashtag;
+        dbTasks.push(task);
       });
     });
   for (x in dbTasks) {
@@ -237,4 +239,3 @@ async function transferData() {
       });
   }
 }
-*/
