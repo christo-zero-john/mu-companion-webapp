@@ -75,22 +75,22 @@ nav {
 }
 
 .guide-btn{
+  display: inline-block;
   border: 0;
-  background-color: #018935ff;
-  box-shadow: -2px 1px 4px 0 #94e4fa6d;
+  background-color: rgb(31, 143, 1);
   /* border: 2px solid #60fa5a9d;
   border-top: 0;
   border-left: 0; */
-  color: white;
-  padding: 2px 30px;
+  color: rgb(158, 254, 198);
+  padding: 2px 15px;
   border-radius: 5px;
-  float: right;
-  margin:0 10px;
+  font-size: 16px;
+  margin:0 30px;
   padding-left: 0;
 }
 
 .guide-btn img{
-  height: 30px;
+  height: 20px;
 }
 
 .title {
