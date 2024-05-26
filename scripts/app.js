@@ -114,7 +114,7 @@ var appFunctions = {
   addTask: async function () {
     console.log("Processing input task");
     let task = {
-      id: "",
+      id: getHashtag.value,
       level: "",
       name: getName.value,
       hashtag: getHashtag.value,
@@ -149,9 +149,6 @@ var appFunctions = {
     } else {
       task.level = 0;
     }
-    await appFunctions.generateTaskId().then((res) => {
-      task.id = res;
-    });
     if (this.validateForm(task, "addTask") == true) {
       task.trackTask = 0;
       task.totalPeopleCompleted = 0;
@@ -384,6 +381,7 @@ var appFunctions = {
       }
     }
     interface.clearDataDiv();
+    dataDiv.innerHTML = `Tasks found:${searchResults.length}`;
     for (x in searchResults) {
       interface.printTask(searchResults[x], "all");
     }
@@ -1408,6 +1406,7 @@ async function main() {
   interface.initializeDivs();
   await localData.initializeLocalStorage();
   interface.setDashboard();
+  // transferData();
 }
 
 // console.log(localData.getUserData());
