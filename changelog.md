@@ -12,3 +12,7 @@ Released on: 21 04 2024
 - Changed hosting from netlify to vercel.
 - New domain https://mu-companion.vercel.app
 
+## v1.0.5.5
+Release 3
+Released on: 26 05 2024
+- Fixes: Fixed errors with database and task addition
