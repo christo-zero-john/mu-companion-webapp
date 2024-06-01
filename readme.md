@@ -61,9 +61,9 @@ mu-companion is a todo list like web app. You can get started by going to the [m
 
 > If you are interested, we are happy to always welcome your valuable contributions.  To become a contributor, you could contact us via [support center](https://mu-companion.vercel.app/). You could contribute to this project as :
 
-- `Start Gazer` : The simple and the easiest way for you to support us is just by starring this repository. Its free and easy to do. Just click the star button above and you are all done 🙌.
+- `Start Donor` : The simple and the easiest way for you to support us is just by starring this repository. Its free and easy to do. Just click the star button above and you are all done 🙌.
 
-- `Task refiner` : A a task refner you should find missing mulearn discord tasks from mu-companion and help us add it to companion.
+- `Task refiner` : A a task refiner you should find missing mulearn discord tasks from mu-companion and help us add it to companion.
 
 - `Task reviewer` : Some tasks have small problems with them while we added them to the comapanion. As a task reviewer, you could go through all the tasks in the companion one by one and help us correct them.
 
