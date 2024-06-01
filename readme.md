@@ -1,6 +1,6 @@
 # <p align="center">[mu companion](https://mu-companion.vercel.app/)</p>
 
-`v1.0.5`
+`v1.0.5.5`
 
 
 <p align="center">
