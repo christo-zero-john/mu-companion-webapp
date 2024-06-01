@@ -49,7 +49,9 @@
           <img src="assets/img/nav-icon.svg" alt="" class="navIcon" />
         </a>
         <h1 class="title">mu-companion</h1>
-
+        <button class="guide-btn d-none d-md-inline" onclick="interface.guide()">
+          <img src="/assets/img/guide.png" alt="" class="" />Guide
+        </button>
         <div
           class="offcanvas offcanvas-start bg-dark text-light col-md-9"
           tabindex="-1"
@@ -69,8 +71,8 @@
 
           <!-- MENU ITEMS -->
           <div class="offcanvas-body no-scrollbar" id="menu-items">
-            <!-- <p class="normal-link">Settings</p>
-            <p class="normal-link">Get Started</p> -->
+            <!-- <p class="normal-link">Settings</p> -->
+            <p class="normal-link"  onclick="interface.guide()">Get Started</p> 
             <p class="normal-link" onclick="interface.printAllTasks()">
               All Mulearn Tasks
             </p>

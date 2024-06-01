@@ -33,6 +33,7 @@ var cloud = {
           snapshot.forEach((doc) => {
             data = doc.data();
           });
+          localData.putBasicData(data);
           resolve(data);
         })
         .catch((err) => {
@@ -55,16 +56,41 @@ var cloud = {
       });
   },
 
-  updatePropertyOfBasicData: function (property) {
-    let dataRef = db.collection("basicData").doc("data");
-    dataRef
-      .update({ channels: property })
-      .then(() => {
-        console.log("Update success");
-      })
-      .catch((err) => {
-        interface.printAlert(err);
-      });
+  updatePropertyOfBasicData: function (property, value) {
+    console.log(
+      "Updating",
+      property,
+      "with",
+      value,
+      "as",
+      {
+        property: value,
+      },
+      "in cloud"
+    );
+    return new Promise((resolve, reject) => {
+      let dataRef = db.collection("basicData").doc("data");
+      dataRef
+        .update({ [property]: value })
+        .then(() => {
+          console.log(
+            "Updated",
+            property,
+            "with",
+            value,
+            "as",
+            {
+              property: value,
+            },
+            "in cloud"
+          );
+          resolve(1);
+        })
+        .catch((err) => {
+          interface.printAlert(err);
+          reject(err);
+        });
+    });
   },
 
   pushPropertyToBasicData: function (property) {
@@ -72,11 +98,10 @@ var cloud = {
   },
 
   saveTaskToDB: async function (task) {
-    console.log(task);
-    let context = new Promise((resolve) => {
+    console.log("Saving task to cloud", task);
+    return new Promise((resolve) => {
       db.collection("tasks")
-        .doc(task.id)
-        .set(task)
+        .add(task)
         .then(() => {
           console.log("Data Written succesfully");
         })
@@ -97,11 +122,9 @@ var cloud = {
       db.collection("tasks")
         .get()
         .then((snapshot) => {
-          console.log("Got snapshot", snapshot);
           snapshot.forEach((doc) => {
             tasks.push(doc.data());
           });
-          console.log(tasks);
           if (tasks.length > 0) {
             localData.putTasks(tasks);
           } else {
@@ -135,7 +158,7 @@ var cloud = {
   updateTaskInDB: async function (task) {
     return new Promise((resolve) => {
       db.collection("tasks")
-        .doc(task.id)
+        .doc(task.hashtag)
         .set(task)
         .then(() => {
           console.log("Task updated and saved to DB");
@@ -190,3 +213,29 @@ var cloud = {
       });
   },
 };
+
+/* trasnferData function*/
+async function transferData() {
+  let dbTasks = new Array();
+  await db
+    .collection("tempTasks")
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        let task = doc.data();
+        task.id = task.hashtag;
+        dbTasks.push(task);
+      });
+    });
+  for (x in dbTasks) {
+    await db
+      .collection("tasks")
+      .doc(`${dbTasks[x].hashtag}`)
+      .set(dbTasks[x])
+      .then(() => {
+        console.log(
+          `Data written successfully with hash ${dbTasks[x].hashtag}`
+        );
+      });
+  }
+}
