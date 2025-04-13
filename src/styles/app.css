@@ -358,11 +358,13 @@ form button:disabled {
 
 .normal-link {
   color: white;
+  text-decoration: none;
   transition: all 0.3s;
 }
 
 .normal-link:hover {
   color: #ffb731;
+  text-decoration: none;
   font-size: 18px;
 }
 
