@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/defaults.css";
 import Settings from "./components/settings/settings";
 import Guide from "./components/guide/guide";
+import Tasks from "./components/tasks/tasks";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -13,7 +14,7 @@ createRoot(document.getElementById("root")).render(
       <Route path="/" element={<Dashboard />} />
       <Route path="/profile/settings" element={<Settings />} />
       <Route path="/guide" element={<Guide />} />
-      <Route path="/tasks" element={<Dashboard />} />
+      <Route path="/tasks" element={<Tasks />} />
       <Route path="/profile/tasks/todo" element={<Dashboard />} />
       <Route path="/profile/tasks/removed" element={<Dashboard />} />
       <Route path="/profile/tasks/completed" element={<Dashboard />} />
