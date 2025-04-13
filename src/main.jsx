@@ -1,15 +1,15 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Dashboard from "./components/dashboard/dashboard";
+import Dashboard from "./components/routes/dashboard/dashboard";
 import "./styles/app.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/defaults.css";
-import Settings from "./components/settings/settings";
-import Guide from "./components/guide/guide";
-import Tasks from "./components/tasks/tasks";
-import TodoTasks from "./components/todo-tasks/todo-tasks";
+import Settings from "./components/routes/settings/settings";
+import Guide from "./components/routes/guide/guide";
+import Tasks from "./components/routes/tasks/tasks";
+import TodoTasks from "./components/routes/todo-tasks/todo-tasks";
 import RemovedTasks from "./components/removed-tasks/removed-tasks";
-import CompletedTasks from "./components/completed-tasks/completed-tasks";
+import CompletedTasks from "./components/routes/completed-tasks/completed-tasks";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -20,7 +20,6 @@ createRoot(document.getElementById("root")).render(
       <Route path="/tasks" element={<Tasks />} />
       <Route path="/profile/tasks/todo" element={<TodoTasks />} />
       <Route path="/profile/tasks/removed" element={<RemovedTasks />} />
-      <Route path="/profile/tasks/completed" element={<CompletedTasks />} />
       <Route path="/admin" element={<Dashboard />} />
       <Route path="/contribute" element={<Dashboard />} />
       <Route path="/support" element={<Dashboard />} />
