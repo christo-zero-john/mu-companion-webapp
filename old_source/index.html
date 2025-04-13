@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>mulearn companion: Dashboard</title>
+    <!-- Metadata tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="shortcut icon"
+      href="/assets/img/favicon.svg"
+      type="image/x-icon"
+    />
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+
+    <!-- my css -->
+    <link rel="stylesheet" href="/defaults.css" />
+  </head>
+
+  <body class="bg-dark text-light no-scrollbar">
+    <div id="loading-div">
+      <div class="">
+        <img src="/assets/img/favicon.svg" alt="" class="menu-icon load-icon" />
+        <p class="name d-inline mx-2">mu-companion</p>
+      </div>
+
+      <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <header class="">
+      <nav class="">
+        <a
+          data-bs-toggle="offcanvas"
+          href="#menuBar"
+          role="button"
+          aria-controls="menuBar"
+        >
+          <img src="assets/img/nav-icon.svg" alt="" class="navIcon" />
+        </a>
+        <h1 class="title">mu-companion</h1>
+        <button class="guide-btn d-none d-md-inline" onclick="interface.guide()">
+          <img src="/assets/img/guide.png" alt="" class="" />Guide
+        </button>
+        <div
+          class="offcanvas offcanvas-start bg-dark text-light col-md-9"
+          tabindex="-1"
+          id="menuBar"
+          aria-labelledby="menuBar"
+        >
+          <div class="offcanvas-header p-2">
+            <h5 class="offcanvas-title" id="menuBar">MENU</h5>
+            <button class="btn" data-bs-dismiss="offcanvas" aria-label="Close">
+              <img
+                src="/assets/img/close-button.svg"
+                alt=""
+                class="close-btn"
+              />
+            </button>
+          </div>
+
+          <!-- MENU ITEMS -->
+          <div class="offcanvas-body no-scrollbar" id="menu-items">
+            <!-- <p class="normal-link">Settings</p> -->
+            <p class="normal-link"  onclick="interface.guide()">Get Started</p> 
+            <p class="normal-link" onclick="interface.printAllTasks()">
+              All Mulearn Tasks
+            </p>
+            <p class="normal-link" onclick="interface.findTask()">Find Tasks</p>
+            <p class="normal-link" onclick="interface.printTrackedTasks()">
+              Your tasks
+            </p>
+            <p class="normal-link" onclick="interface.printRemovedTracks()">
+              Removed tasks
+            </p>
+            <p class="normal-link" onclick="interface.printCompletedTasks()">
+              Completed tasks
+            </p>
+            <!-- <p class="normal-link">Admin Dashboard</p>
+            <p class="normal-link">Contribute</p>
+            <p class="normal-link">Support Center</p>
+            <p class="normal-link">About</p> -->
+            <a
+              href="https://github.com/christo-zero-john/mu-companion-webapp/stargazers"
+              class="link-aqua"
+            >
+              <div
+                class="github d-flex flex-row justify-content-center m-0 pb-0"
+              >
+                <p class="">Star on Github</p>
+                <img src="/assets/img/github.svg" alt="" class="" /></div
+            ></a>
+          </div>
+          <!-- MENU ITEMS UP -->
+        </div>
+      </nav>
+
+      <!-- Dashboard div -->
+      <div
+        id="dashboard"
+        class="d-flex flex-row justify-content-around align-items-center"
+      ></div>
+    </header>
+
+    <main class="dashboard-tasks mt-5">
+      <h2 class="fs-4 fw-100 mx-3">Your Tasks</h2>
+      <div class="fw-100 no-scrollbar ms-5 me-1 my-3" id="dashboardTasks">
+        <p class="">Track some tasks to view them here.</p>
+        <p class="fw-300">
+          Click on
+          <img
+            src="/assets/img/all-tasks-icon.svg"
+            alt="All tasks icon"
+            class="logo-in-article"
+          />
+          to view all taks or Search for tasks
+          <img
+            src="/assets/img/find-task-icon.svg"
+            alt="All tasks icon"
+            class="logo-in-article"
+          />
+        </p>
+      </div>
+    </main>
+
+    <!-- Menu Icons -->
+    <footer
+      class="sticky-bottom menu d-flex flex-row justify-content-around align-items-center p-2"
+    >
+      <!-- View all tasks -->
+      <img
+        onclick="interface.printAllTasks()"
+        src="/assets/img/all-tasks-icon.svg"
+        alt=""
+        class="menu-icon"
+      />
+
+      <!-- Find tasks -->
+      <img
+        onclick="interface.findTask()"
+        src="/assets/img/find-task-icon.svg"
+        alt=""
+        class="menu-icon"
+      />
+
+      <!-- View Tracked Tasks -->
+      <img
+        onclick="interface.printTrackedTasks()"
+        src="/assets/img/tracked-task-icon.svg"
+        alt=""
+        class="menu-icon"
+      />
+
+      <!-- View completed Tasks -->
+      <img
+        onclick="interface.printCompletedTasks()"
+        src="/assets/img/completed-task-icon.svg"
+        alt=""
+        class="menu-icon"
+      />
+
+      <!-- Goto Github repository -->
+      <a
+        href="https://github.com/christo-zero-john/mu-companion-webapp"
+        class=""
+      >
+        <img
+          src="/assets/img/github.svg"
+          alt="Goto Github repository"
+          class="menu-icon"
+        />
+      </a>
+    </footer>
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"
+    ></script>
+    <!-- jquery -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- firebase scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+
+    <!-- app script -->
+    <script src="/scripts/appConfigs.js"></script>
+    <script src="/scripts/firebaseScript.js"></script>
+    <script src="/scripts/app.js"></script>
+    <link rel="stylesheet" href="/styles/app.css" />
+  </body>
+</html>
