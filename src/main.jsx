@@ -13,6 +13,7 @@ import RemovedTasks from "./components/routes/removed-tasks/removed-tasks";
 import Admin from "./components/routes/admin/admin";
 import Contribute from "./components/routes/contribute/contribute";
 import Support from "./components/routes/support/support";
+import About from "./components/routes/about/about";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -27,7 +28,7 @@ createRoot(document.getElementById("root")).render(
       <Route path="/admin" element={<Admin />} />
       <Route path="/contribute" element={<Contribute />} />
       <Route path="/support" element={<Support />} />
-      <Route path="/about" element={<Dashboard />} />
+      <Route path="/about" element={<About />} />
     </Routes>
   </BrowserRouter>
 );
