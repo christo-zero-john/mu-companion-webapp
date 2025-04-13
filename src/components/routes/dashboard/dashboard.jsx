@@ -1,7 +1,8 @@
 import { useState } from "react";
 import LoadingScreen from "../../common/loading-screen";
 import { useEffect } from "react";
-import NavBar from "./nav-bar";
+import NavBar from "../../common/nav-bar";
+import CompletedTaskList from "./completed-task-list";
 
 export default function Dashboard() {
   const [show, setShow] = useState(true);
@@ -12,6 +13,7 @@ export default function Dashboard() {
     <div className="bg-dark text-light no-scrollbar">
       <LoadingScreen show={show} />
       <NavBar />
+      <CompletedTaskList />
     </div>
   );
 }
