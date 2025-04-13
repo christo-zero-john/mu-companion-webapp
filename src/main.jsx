@@ -8,8 +8,9 @@ import Settings from "./components/routes/settings/settings";
 import Guide from "./components/routes/guide/guide";
 import Tasks from "./components/routes/tasks/tasks";
 import TodoTasks from "./components/routes/todo-tasks/todo-tasks";
-import RemovedTasks from "./components/removed-tasks/removed-tasks";
 import CompletedTasks from "./components/routes/completed-tasks/completed-tasks";
+import RemovedTasks from "./components/routes/removed-tasks/removed-tasks";
+import Admin from "./components/routes/admin/admin";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -20,7 +21,8 @@ createRoot(document.getElementById("root")).render(
       <Route path="/tasks" element={<Tasks />} />
       <Route path="/profile/tasks/todo" element={<TodoTasks />} />
       <Route path="/profile/tasks/removed" element={<RemovedTasks />} />
-      <Route path="/admin" element={<Dashboard />} />
+      <Route path="/profile/tasks/completed" element={<CompletedTasks />} />
+      <Route path="/admin" element={<Admin />} />
       <Route path="/contribute" element={<Dashboard />} />
       <Route path="/support" element={<Dashboard />} />
       <Route path="/about" element={<Dashboard />} />
