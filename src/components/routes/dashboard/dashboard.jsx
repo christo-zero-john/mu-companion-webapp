@@ -3,6 +3,7 @@ import LoadingScreen from "../../common/loading-screen";
 import { useEffect } from "react";
 import NavBar from "../../common/nav-bar";
 import CompletedTaskList from "./completed-task-list";
+import FooterMenu from "./footer-menu";
 
 export default function Dashboard() {
   const [show, setShow] = useState(true);
@@ -14,6 +15,7 @@ export default function Dashboard() {
       <LoadingScreen show={show} />
       <NavBar />
       <CompletedTaskList />
+      <FooterMenu />
     </div>
   );
 }
