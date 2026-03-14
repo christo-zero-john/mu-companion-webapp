@@ -1,0 +1,5 @@
+- always use pnpm
+- always create all rlevant deocs and keep docs upto date
+- use supabase for db
+- never use ts or tsx. always use js and jsx
+- always follow next js and react best practices
