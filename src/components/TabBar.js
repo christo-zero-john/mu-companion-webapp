@@ -3,16 +3,17 @@ export default function TabBar({
   activeTab = "All Tasks",
 }) {
   return (
-    <div className="flex items-center gap-6 border-b border-border w-full pt-4 overflow-x-auto hide-scrollbar">
+    <div className="flex items-center gap-3 w-full py-4 overflow-x-auto hide-scrollbar">
       {tabs.map((tab) => (
         <button
           key={tab}
-          className={`pb-3 relative whitespace-nowrap text-sm font-semibold transition-colors ${activeTab === tab ? "text-primary" : "text-text-secondary hover:text-white"}`}
+          className={`px-5 py-2.5 rounded-lg whitespace-nowrap text-sm font-semibold transition-all ${
+            activeTab === tab
+              ? "bg-white text-[#111827] shadow-sm"
+              : "text-text-secondary hover:text-white"
+          }`}
         >
           {tab}
-          {activeTab === tab && (
-            <div className="absolute bottom-[-1px] left-0 w-full h-[2px] bg-primary rounded-t-full" />
-          )}
         </button>
       ))}
     </div>
