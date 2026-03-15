@@ -3,20 +3,28 @@
 :root {
   --background: #000000;
   --foreground: #ffffff;
-  --panel: #1a1a1a;
-  --panel-active: #262626;
-  --primary: #8b5cf6;
+  --panel: #1f1f21;
+  --panel-header: #252528;
+  --panel-active: #262628;
+  --card-odd: #2a2a2d;
+  --card-even: #202022;
+  --badge-bg: #18181b;
+  --primary: #a855f7;
   --secondary-amber: #f59e0b;
   --secondary-orange: #ea580c;
   --text-secondary: #9ca3af;
-  --border-color: #262626;
+  --border-color: #333336;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-panel: var(--panel);
+  --color-panel-header: var(--panel-header);
   --color-panel-active: var(--panel-active);
+  --color-card-odd: var(--card-odd);
+  --color-card-even: var(--card-even);
+  --color-badge-bg: var(--badge-bg);
   --color-primary: var(--primary);
   --color-secondary-amber: var(--secondary-amber);
   --color-secondary-orange: var(--secondary-orange);
