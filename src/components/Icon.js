@@ -1,17 +1,17 @@
 import Image from "next/image";
 
-import completedIcon from "../../reources/icons/icon=completed.png";
-import completed2Icon from "../../reources/icons/icon=completed2.png";
-import copyIcon from "../../reources/icons/icon=copy.png";
-import githubIcon from "../../reources/icons/icon=github.png";
-import karmaPointsIcon from "../../reources/icons/icon=karma-points.png";
-import menuIcon from "../../reources/icons/icon=menu.png";
-import openIcon from "../../reources/icons/icon=open.png";
-import searchIcon from "../../reources/icons/icon=search.png";
-import startIcon from "../../reources/icons/icon=start.png";
-import taskListIcon from "../../reources/icons/icon=task-list.png";
-import trackedTasksIcon from "../../reources/icons/icon=tracked-tasks.png";
-import wishlistIcon from "../../reources/icons/icon=wishlist.png";
+import completedIcon from "@/assets/icons/completed.png";
+import completed2Icon from "@/assets/icons/completed2.png";
+import copyIcon from "@/assets/icons/copy.png";
+import githubIcon from "@/assets/icons/github.png";
+import karmaPointsIcon from "@/assets/icons/karma-points.png";
+import menuIcon from "@/assets/icons/menu.png";
+import openIcon from "@/assets/icons/open.png";
+import searchIcon from "@/assets/icons/search.png";
+import startIcon from "@/assets/icons/start.png";
+import taskListIcon from "@/assets/icons/task-list.png";
+import trackedTasksIcon from "@/assets/icons/tracked-tasks.png";
+import wishlistIcon from "@/assets/icons/wishlist.png";
 
 const iconMap = {
   completed: completedIcon,
@@ -37,12 +37,16 @@ export default function Icon({ name, size = 24, className = "" }) {
   }
 
   return (
-    <Image
-      src={iconSrc}
-      alt={`${name} icon`}
-      width={size}
-      height={size}
-      className={className}
-    />
+    <div
+      className={`relative flex items-center justify-center ${className}`}
+      style={{ width: size, height: size }}
+    >
+      <Image
+        src={iconSrc}
+        alt={`${name} icon`}
+        fill
+        className="object-contain"
+      />
+    </div>
   );
 }
